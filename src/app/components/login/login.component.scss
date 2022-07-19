@@ -1,0 +1,43 @@
+
+.login-button{
+    background: #45D7C2;
+}
+
+.register-button{
+    background: none;
+    border : 1px solid white;
+    color: white;
+}
+
+.opacity-input{
+    --placeholder-opacity: 1;
+    color: white;
+}
+
+.content{
+    height: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background: linear-gradient(#1FC2A5, #076589);
+}
+
+.forgetpwd:hover{
+    cursor: pointer;
+    color: black;
+}
+
+.forgetpwd{
+    color: white;
+}
+
+.logo{
+    width: 250px;
+}
+
+.credit{
+    color: rgba(255, 255, 255, 0.534);
+    font-style: italic;
+}
+
