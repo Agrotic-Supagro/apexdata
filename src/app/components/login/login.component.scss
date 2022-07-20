@@ -1,12 +1,25 @@
 
 .login-button{
+    min-width: 200px;
+    font-size: 14px;
+    margin-top: 20px;
     background: #45D7C2;
+    color: white;
+    text-transform: uppercase;
 }
 
 .register-button{
+    min-width: 200px;
+    font-size: 14px;
+    margin-top: 40px;
     background: none;
     border : 1px solid white;
     color: white;
+    text-transform: uppercase;
+}
+
+.formfield{
+    margin-top: 40px;
 }
 
 .opacity-input{
@@ -17,9 +30,6 @@
 .content{
     height: 100%;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
     background: linear-gradient(#1FC2A5, #076589);
 }
 
@@ -30,14 +40,32 @@
 
 .forgetpwd{
     color: white;
+    margin-top: 40px;
 }
 
 .logo{
     width: 250px;
+    margin-top: 100px;
 }
 
 .credit{
     color: rgba(255, 255, 255, 0.534);
     font-style: italic;
+    margin-top : 40px;
+}
+
+.langage{
+    margin-top: 40px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.selector{
+    width: 150px;
+}
+
+.countryIcon{
+    margin-left: 15px;
 }
 

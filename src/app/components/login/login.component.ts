@@ -17,15 +17,14 @@ export class LoginComponent implements OnInit {
   /*credentials = {
       email: 'toto@gmail.com',
       mot_de_passe: 'toto'
-    };*/
-  credentials = {
-    email: '',
-    mot_de_passe: ''
-  };
+  };*/
+  
 
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required]);
   hide = true;
+  langSelected = "";
+  languageIconPath = "";
 
   //Trad objects
   errorConn = { key : "errorConn", value : ""};
@@ -53,9 +52,22 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this._translateLanguage();
+    this.langSelected = "fr";
+    this.languageIconPath = "https://www.agrotic.org/apexv3-sync/traduction/assets/countriesIcons/"+this.langSelected+".png";
   }
 
   ngAfterViewInit() {
+  }
+
+  changeLang(value : string){
+    this._translate.use(value);
+    for(const elem of this.tabOfVars){
+      this._translate.get(elem.key).subscribe( res => {
+        elem.value = res;
+      })
+    }
+    this.langSelected = value;
+    this.languageIconPath = "https://www.agrotic.org/apexv3-sync/traduction/assets/countriesIcons/"+this.langSelected+".png";
   }
 
   _translateLanguage(): void {
@@ -68,8 +80,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log('formulaire :', this.credentials);
-    this.auth.login(this.credentials).subscribe(async res => {
+    let credentials = {
+        email: this.email.value!,
+        mot_de_passe: this.password.value!
+    };
+    console.log('formulaire :', credentials);
+    this.auth.login(credentials).subscribe(async res => {
       console.log('in login return: ', res);
       if (res.status) {
         const navigationExtras: NavigationExtras = {

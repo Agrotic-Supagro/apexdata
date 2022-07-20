@@ -1,37 +1,38 @@
+
 <div class="content">
 
-    <div lines="none">
+    <div>
         <img src="../../../assets/images/apex_logo_blanc_cadre.png" class="logo">
     </div>
-    
-    <div lines="none">
-        <mat-form-field appearance="outline">
+
+    <div>
+        <mat-form-field appearance="outline" class="formfield">
             <input matInput placeholder="{{ 'email' | translate }}" [formControl]="email" class="opacity-input">
         </mat-form-field>
     </div>
     
-    <div lines="none">
+    <div>
         <mat-form-field appearance="outline">
             <input matInput [type]="hide ? 'password' : 'text'" placeholder="{{ 'password' | translate }}" [formControl]="password" class="opacity-input">
         </mat-form-field>
     </div>
     
-    <div>
-        <button mat-button (click)="login()" class="login-button" [translate]="'connect'"></button>
+    <div class="row">
+        <button mat-button class="login-button" (click)="login()">{{ 'connect' | translate }}</button>
     </div>
     
     <div class="forgetpwd" (click)="forgetpwd()" [translate]="'passwordRecup'"></div>
-    
-    <!-- <ion-row class="langage">
-        <p [translate]="'language'" style="color: white;"></p>
-        <ion-select [(ngModel)]="language" (ionChange)="changeLanguage()" okText="{{ 'okBtn' | translate }}" cancelText="{{ 'cancel' | translate }}" style="margin-left: 5%; color: white;">
-        <ion-select-option *ngFor="let country of supportedLanguages | keyvalue" value="{{country.value}}"> {{country.key}} </ion-select-option>
-        </ion-select>
-        <ion-img [src]="languageIconPath" style="margin-left: 3%;"></ion-img>
-    </ion-row>  -->
+
+    <div class="langage">
+        <mat-select (selectionChange)="changeLang($event.value)" [(value)]="langSelected" class="selector">
+            <mat-option value="fr">Français</mat-option>
+            <mat-option value="en">English</mat-option>
+        </mat-select>
+        <img [src]="languageIconPath" class="countryIcon">
+    </div>
 
     <div>
-        <button mat-button expand="full" class="register-button main-button" routerLink="/register" routerDirection="forward" [translate]="'register'"> </button>
+        <button mat-button  class="register-button" routerLink="/register" routerDirection="forward"> {{ 'register' | translate }}</button>
     </div>
 
     <div>

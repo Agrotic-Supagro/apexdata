@@ -1,1 +1,7 @@
-<p>info-dialog works!</p>
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>{{text}}</h3> 
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{btn}}</button>
+</mat-dialog-actions>
