@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   hide = true;
   langSelected = "";
-  languageIconPath = "";
+  languageIconPath = ""
+  serverIconPath = "https://www.agrotic.org/apexv3-sync/traduction/assets/countriesIcons/";
 
   //Trad objects
   errorConn = { key : "errorConn", value : ""};
@@ -53,12 +54,9 @@ export class LoginComponent implements OnInit {
               ) { }
 
   ngOnInit() {
-    this._translateLanguage();
+    console.log("Navigator Language : "+navigator.language);
     this.langSelected = "fr";
-    this.languageIconPath = "https://www.agrotic.org/apexv3-sync/traduction/assets/countriesIcons/"+this.langSelected+".png";
-  }
-
-  ngAfterViewInit() {
+    this._translateLanguage();
   }
 
   changeLang(value : string){
@@ -69,11 +67,12 @@ export class LoginComponent implements OnInit {
       })
     }
     this.langSelected = value;
-    this.languageIconPath = "https://www.agrotic.org/apexv3-sync/traduction/assets/countriesIcons/"+this.langSelected+".png";
+    this.languageIconPath = this.serverIconPath+this.langSelected+".png";
   }
 
   _translateLanguage(): void {
-    this._translate.use("fr");
+    this.languageIconPath = this.serverIconPath+this.langSelected+".png";
+    this._translate.use(this.langSelected);
     for(const elem of this.tabOfVars){
       this._translate.get(elem.key).subscribe( res => {
         elem.value = res;
