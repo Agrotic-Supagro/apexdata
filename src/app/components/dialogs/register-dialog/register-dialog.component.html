@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ 'createAccount' | translate }}</h2>
+<mat-dialog-content class="mat-typography" style="width: 500px;" [formGroup]="registrationForm">
+    <mat-grid-list cols="2" rowHeight="100px">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'surname' | translate }}</mat-label>
+                <input matInput formControlName="prenom">
+                <mat-error *ngIf="registrationForm.get('prenom')!.hasError('maxlength')">{{ 'surnameInd' | translate }}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'name' | translate }}</mat-label>
+                <input matInput formControlName="nom">
+                <mat-error *ngIf="registrationForm.get('nom')!.hasError('maxlength')">{{ 'nameInd' | translate }}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'email' | translate }}</mat-label>
+                <input matInput formControlName="email">
+                <mat-error *ngIf="registrationForm.get('email')!.hasError('email')">{{ 'emailInd' | translate }}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'structure' | translate }}</mat-label>
+                <input matInput formControlName="structure">
+                <mat-error *ngIf="registrationForm.get('structure')!.hasError('maxlength')">{{ 'structureInd' | translate }}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'password' | translate }}</mat-label>
+                <input matInput formControlName="mot_de_passe">
+                <mat-error *ngIf="registrationForm.get('mot_de_passe')!.hasError('maxlength')">{{ 'pwdInd' | translate }}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+  <button mat-button mat-dialog-close (click)="register()" [disabled]="!registrationForm.valid">{{ 'confirmRegister' | translate }}</button>
+</mat-dialog-actions>

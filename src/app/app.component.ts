@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Apex Vigne';
+  title = 'Apex Territoires';
 
   constructor(
     private _translate: TranslateService,

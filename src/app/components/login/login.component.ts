@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from '../dialogs/info-dialog/info-dialog.component';
 import {FormControl, Validators} from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { ResetpwdDialogComponent } from '../dialogs/resetpwd-dialog/resetpwd-dialog.component';
+import { RegisterDialogComponent } from '../dialogs/register-dialog/register-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
   };*/
   
 
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]);
   password = new FormControl('', [Validators.required]);
   hide = true;
   langSelected = "";
@@ -108,63 +110,24 @@ export class LoginComponent implements OnInit {
 
   forgetpwd() {
     console.log('ToDo > mot de passe oublié');
-    //this.presentPrompt();
+    this.presentPrompt();
   }
 
-  insert() {
-    const data = {id_utilisateur: '4d1h3b977-0611-4a14-8673-6cb3fbd3ce61',
-    prenom: 'D',
-    nom: 'S',
-    email: 'd@gt.gg',
-    mot_de_passe: 'x',
-    structure: 's'
-  };
+  async presentPrompt() {
+    const dialogRef = this.dialog.open(ResetpwdDialogComponent, {
+      data: {
+        emailSent: this.emailSent.value,
+        emailDoesntExist : this.emailDoesntExist.value,
+      },
+    });
   }
 
-  // async presentPrompt() {
-  //   const alert = await this.alertCtrl.create({
-  //     header: this.reInitMdp.value,
-  //     inputs: [
-  //       {
-  //         name: 'email',
-  //         type: 'email',
-  //         placeholder: this.yourEmail.value
-  //       }
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: this.cancel.value,
-  //         role: 'cancel',
-  //         handler: data => {
-  //           console.log('Cancel clicked');
-  //         }
-  //       },
-  //       {
-  //         text: this.send.value,
-  //         handler: data => {
-  //           const pwd = Math.random().toString(36).slice(-8);
-  //           const dataPwd = {mot_de_passe: pwd, email: data.email};
-  //           console.log(dataPwd);
-  //           this.auth.resetPassword(dataPwd).subscribe(async res => {
-  //             if (res.status) {
-  //               console.log('## Return reset pwd :', res.data);
-  //               this.openSnackBar(this.emailSent.value);
-  //             } else {
-  //               this.openSnackBar(this.emailDoesntExist.value);
-  //             }
-  //           });
-
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   await alert.present();
-  // }
+  showRegisterForm(){
+    const dialogRef = this.dialog.open(RegisterDialogComponent);
+  }
 
   openSnackBar(message: string, action? : string) {
-    this._snackBar.open(message, action ? action : undefined, {
-      verticalPosition : 'top'
-    });
+    this._snackBar.open(message, action ? action : undefined);
   }
   
 }
