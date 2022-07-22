@@ -24,16 +24,16 @@
         </mat-grid-tile>
         <mat-grid-tile>
             <mat-form-field appearance="outline">
-                <mat-label>{{ 'structure' | translate }}</mat-label>
-                <input matInput formControlName="structure">
-                <mat-error *ngIf="registrationForm.get('structure')!.hasError('maxlength')">{{ 'structureInd' | translate }}</mat-error>
+                <mat-label>{{ 'password' | translate }}</mat-label>
+                <input matInput formControlName="mot_de_passe">
+                <mat-error *ngIf="registrationForm.get('mot_de_passe')!.hasError('maxlength')">{{ 'pwdInd' | translate }}</mat-error>
             </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>
             <mat-form-field appearance="outline">
-                <mat-label>{{ 'password' | translate }}</mat-label>
-                <input matInput formControlName="mot_de_passe">
-                <mat-error *ngIf="registrationForm.get('mot_de_passe')!.hasError('maxlength')">{{ 'pwdInd' | translate }}</mat-error>
+                <mat-label>{{ 'structure' | translate }}</mat-label>
+                <input matInput formControlName="structure">
+                <mat-error *ngIf="registrationForm.get('structure')!.hasError('maxlength')">{{ 'structureInd' | translate }}</mat-error>
             </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>

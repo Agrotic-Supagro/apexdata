@@ -5,6 +5,17 @@ html, body {
 }
 
 body { 
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Sora', sans-serif;
     margin : 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill{
+    -webkit-text-fill-color: white !important;
 }

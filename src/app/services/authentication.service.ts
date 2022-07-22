@@ -46,6 +46,7 @@ export class AuthenticationService {
               mot_de_passe: credentials.mot_de_passe,
               structure: res.data.structure
             };
+            window.sessionStorage.setItem('user', JSON.stringify(dataUser));
             this.authenticationState.next(true);
             const data = {
               jwt: res.jwt,

@@ -20,6 +20,11 @@ import {MatSelectModule} from '@angular/material/select';
 import { ResetpwdDialogComponent } from './components/dialogs/resetpwd-dialog/resetpwd-dialog.component';
 import { RegisterDialogComponent } from './components/dialogs/register-dialog/register-dialog.component';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import {MatIconModule} from '@angular/material/icon';
+import { ExportComponent } from './components/export/export.component';
+import { AccountComponent } from './components/account/account.component';
+import { MapComponent } from './components/map/map.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,7 +42,11 @@ const appRoutes: Routes = [
     HomeComponent,
     InfoDialogComponent,
     ResetpwdDialogComponent,
-    RegisterDialogComponent
+    RegisterDialogComponent,
+    NavbarComponent,
+    ExportComponent,
+    AccountComponent,
+    MapComponent
   ],
   imports: [
     MatButtonModule,
@@ -54,6 +63,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     MatSelectModule,
+    MatIconModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

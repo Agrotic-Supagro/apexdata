@@ -1,1 +1,25 @@
-<p>navbar works!</p>
+<!--NAV BAR-->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand navText" href="#">
+        <img src="../../../assets/images/apex_logo_blanc_cadre.png" class="logo">
+        ApeX Territoires
+    </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-5 mb-2 mb-lg-0">
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link navText" routerLink="map"><mat-icon>map</mat-icon>Carte interactive</a>
+        </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link navText" routerLink="export"><mat-icon>import_export</mat-icon>Export</a>
+        </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link navText" routerLink="account"> <mat-icon>account_circle</mat-icon>Compte</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+</nav> 

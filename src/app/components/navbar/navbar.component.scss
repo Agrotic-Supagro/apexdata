@@ -1,0 +1,57 @@
+.navbar{
+    background: #008080;
+    color: white;
+    text-align: center;
+}
+
+.navText{
+    color: white;
+}
+
+.nav-item{
+    margin-right: 20px;
+    margin-left: 20px;
+    max-width: 200px;
+}
+
+.navbar-brand{
+    font-size: 25px;
+}
+
+.mat-icon {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.logo{
+    width: 50px;
+    margin-right: 10px;
+}
+
+.navbar-toggler{
+    color: white;
+}
+
+.navbar-nav > .active > a {
+    border-radius: 25px;
+    background: white;
+    color: #008080;
+    -webkit-transition: background-color 50ms linear;
+    -ms-transition: background-color 50ms linear;
+    transition: background-color 50ms linear;
+}
+
+.navbar-nav a{
+    border-radius: 25px;
+}
+
+.nav-item > a:hover {
+    color: black;
+}
+
+@media (min-width: 768px) {
+    .navbar .navbar-collapse {
+    }
+}
+
+  

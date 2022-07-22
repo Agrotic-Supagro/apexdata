@@ -32,18 +32,11 @@ export class LoginComponent implements OnInit {
   //Trad objects
   errorConn = { key : "errorConn", value : ""};
   wrongID = { key : "wrongID", value : ""};
-  reInitMdp  = { key : "reInitMdp", value : ""};
-  yourEmail = { key : "yourEmail", value : ""};
   emailSent  = { key : "emailSent", value : ""};
   emailDoesntExist  = { key : "emailDoesntExist", value : ""};
-  error  = { key : "error", value : ""};
-  waitMsg  = { key : "waitMsg", value : ""};
   okBtn  = { key : "okBtn", value : ""};
-  dlMsg  = { key : "dlMsg", value : ""};
-  cancel  = { key : "cancel", value : ""};
-  send  = { key : "send", value : ""};
-  tabOfVars = [ this.errorConn,  this.wrongID, this.reInitMdp, this.yourEmail, this.emailSent, this.emailDoesntExist, this.error, this.waitMsg,
-    this.okBtn, this.dlMsg, this.cancel, this.send,];
+  tabOfVars = [ this.errorConn,  this.wrongID, this.emailSent, this.emailDoesntExist,
+    this.okBtn];
 
   constructor(private auth: AuthenticationService,
               private router: Router,

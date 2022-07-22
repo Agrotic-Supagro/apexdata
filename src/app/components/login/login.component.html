@@ -19,7 +19,7 @@
         </mat-form-field>
     </div>
     
-    <div class="row">
+    <div>
         <button mat-button class="login-button" (click)="login()" [disabled]='!email.valid || !password.valid'>{{ 'connect' | translate }}</button>
     </div>
     
@@ -29,8 +29,8 @@
         <mat-select (selectionChange)="changeLang($event.value)" [(value)]="langSelected" class="selector">
             <mat-option value="fr">Français</mat-option>
             <mat-option value="en">English</mat-option>
-            <mat-option value="es">Espagnol</mat-option>
-            <mat-option value="zh">Chinese</mat-option>
+            <mat-option value="es">Español</mat-option>
+            <mat-option value="zh">中国人</mat-option>
         </mat-select>
         <img [src]="languageIconPath" class="countryIcon">
     </div>
