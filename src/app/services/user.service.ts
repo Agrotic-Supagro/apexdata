@@ -22,7 +22,7 @@ export class UserService {
 
   initUser(){
     try{
-      let userData = window.sessionStorage.getItem('user');
+      let userData = window.localStorage.getItem('user');
       let json = JSON.parse(userData!);
       let user = this.JSONtoUser(json);
       this.setUser(user);

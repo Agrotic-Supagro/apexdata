@@ -10,8 +10,7 @@ const TOKEN_KEY = 'TOKEN_KEY';
   providedIn: 'root'
 })
 export class AuthenticationService {
-
-  // AUTH_SERVER_ADDRESS = 'http://localhost:80/api';
+  
   AUTH_SERVER_ADDRESS = 'https://www.agrotic.org/apexv3-sync';
   authenticationState = new BehaviorSubject(false);
   registerState = new BehaviorSubject(false);
@@ -36,7 +35,7 @@ export class AuthenticationService {
       tap(async (res: any) => {
         if (res.status) {
           try{
-            window.sessionStorage.setItem(TOKEN_KEY, res.jwt)
+            window.localStorage.setItem(TOKEN_KEY, res.jwt)
             console.log(res.data);
             const dataUser = {
               id_utilisateur: res.data.id_utilisateur,
@@ -46,7 +45,7 @@ export class AuthenticationService {
               mot_de_passe: credentials.mot_de_passe,
               structure: res.data.structure
             };
-            window.sessionStorage.setItem('user', JSON.stringify(dataUser));
+            window.localStorage.setItem('user', JSON.stringify(dataUser));
             this.authenticationState.next(true);
             const data = {
               jwt: res.jwt,
@@ -92,7 +91,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    window.sessionStorage.clear();
+    window.localStorage.clear();
     this.router.navigate(['login']);
   }
 

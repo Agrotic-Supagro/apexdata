@@ -1,0 +1,21 @@
+.container { 
+    height: 600px; 
+    width: auto;
+    margin-top: 50px;
+    margin-left: 50px;
+    background: white;
+}
+
+.map{
+    height: 100%; 
+    width: 100%;
+    border : 3px solid #008080;
+}
+
+.drawer{
+    background: white;
+    color: black;
+    border : 3px solid #008080;
+    width: 25%;
+    overflow-y: scroll;
+}

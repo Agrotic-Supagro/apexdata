@@ -11,7 +11,7 @@ export class AuthGuardService {
   constructor(private router: Router,) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    let val = window.sessionStorage.getItem(TOKEN_KEY);
+    let val = window.localStorage.getItem(TOKEN_KEY);
     if (val != null) {
       return true;
     } else {

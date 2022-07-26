@@ -25,6 +25,8 @@ import {MatIconModule} from '@angular/material/icon';
 import { ExportComponent } from './components/export/export.component';
 import { AccountComponent } from './components/account/account.component';
 import { MapComponent } from './components/map/map.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -50,6 +52,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     MatButtonModule,
+    MatSidenavModule,
     MatGridListModule,
     BrowserModule,
     AppRoutingModule,
@@ -64,6 +67,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     MatSelectModule,
     MatIconModule,
+    LeafletModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
