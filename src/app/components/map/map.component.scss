@@ -1,8 +1,10 @@
-.container { 
-    height: 600px; 
-    width: auto;
+.matDrawerContainer { 
+    height: 800px; 
+    width : auto;
     margin-top: 50px;
     margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
     background: white;
 }
 
@@ -12,10 +14,77 @@
     border : 3px solid #008080;
 }
 
+.drawerTitle{
+    width: 100%;
+}
+
+.hr{
+    width: 75%; 
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .drawer{
     background: white;
     color: black;
     border : 3px solid #008080;
     width: 25%;
     overflow-y: scroll;
+    display: flex;
+    text-align: center;
 }
+
+.pie{
+    margin: auto;
+    width: 50%;
+    height: 35%;
+}
+
+.absente {
+    border: #494949 solid 1px;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    background-color: rgb(204, 255, 255);
+}
+
+.moderee {
+    border: #494949 solid 1px;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    background-color: rgb(255, 255, 153);
+}
+
+.importante {
+    border: #494949 solid 1px;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    background-color: rgb(255, 204, 0);
+}
+
+.forte {
+    border: #494949 solid 1px;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    background-color: rgb(255, 102, 0);
+}
+
+.icapex{
+    color: rgb(0, 101, 130);
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.parcelleLink:hover{
+    cursor: pointer;
+}
+
+.parcelleLink{
+    text-decoration: underline;
+}
+

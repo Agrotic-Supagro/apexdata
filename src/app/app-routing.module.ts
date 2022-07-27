@@ -5,6 +5,7 @@ import { ExportComponent } from './components/export/export.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { MapComponent } from './components/map/map.component';
+import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-detail.component';
 import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [{
@@ -26,8 +27,12 @@ const routes: Routes = [{
     component : HomeComponent,
     children: [
       {
+        path: 'parcelle-detail/:parcellename',
+        component: ParcelleDetailComponent,
+      },
+      {
           path: 'map',
-          component: MapComponent
+          component: MapComponent,
       },
       {
         path: 'export',

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { tap } from 'rxjs/operators';
 import { Session } from '../models/Session';
-import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
 
   //https://www.agrotic.org/apexv3-sync
-  //https://www.agrotic.org/apexvigne.agrotic.org/data/api //not working because of cors?
+  //https:/apexvigne.agrotic.org/data/api //not working because of cors?
   AUTH_SERVER_ADDRESS = 'https://www.agrotic.org/apexv3-sync';
 
   constructor(

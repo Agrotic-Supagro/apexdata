@@ -27,6 +27,7 @@ import { AccountComponent } from './components/account/account.component';
 import { MapComponent } from './components/map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-detail.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
     NavbarComponent,
     ExportComponent,
     AccountComponent,
-    MapComponent
+    MapComponent,
+    ParcelleDetailComponent
   ],
   imports: [
     MatButtonModule,
