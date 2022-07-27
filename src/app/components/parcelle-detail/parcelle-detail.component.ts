@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ParcelleDetailComponent implements OnInit {
 
-  name : string = "";
+  idParcelle : string = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -16,7 +16,8 @@ export class ParcelleDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.name = params['parcellename'];
+      this.idParcelle = params['idOfparcelleSelected'];
+      console.log("id parcelle : "+this.idParcelle)
     });
   }
 

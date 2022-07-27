@@ -8,9 +8,7 @@ import { Session } from '../models/Session';
 })
 export class SessionService {
 
-  //https://www.agrotic.org/apexv3-sync
-  //https:/apexvigne.agrotic.org/data/api //not working because of cors?
-  AUTH_SERVER_ADDRESS = 'https://www.agrotic.org/apexv3-sync';
+  AUTH_SERVER_ADDRESS = 'https:/apexvigne.agrotic.org/data/api';
 
   constructor(
     private  httpClient: HttpClient,
@@ -25,7 +23,7 @@ export class SessionService {
       idUser: this.userService.getUser().id_utilisateur
     };
     return new Promise((resolve, reject) => {
-      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/apexWebTest.php`, jsonData)
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
       .subscribe((res : any) => {
         console.log("res data : "+JSON.stringify(res.data));
         for(const elem of res.data){
@@ -43,6 +41,7 @@ export class SessionService {
   JSONtoParcelle(data : any){
     return new Session(
       data.id_session,
+      data.id_parcelle,
       data.date_creation,
       data.date_maj,
       data.nom_parcelle, 

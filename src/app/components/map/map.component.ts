@@ -22,7 +22,8 @@ export class MapComponent implements OnInit {
   icapexSelected : string = "";
   dateCreaSelected : string=  "";
   dateModifSelected : string=  "";
-  parcelleSelected : string=  "";
+  nameOfparcelleSelected : string=  "";
+  idOfparcelleSelected : string = "";
   
 
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
@@ -86,7 +87,8 @@ export class MapComponent implements OnInit {
         this.icapexSelected = session.ic_apex;
         this.dateCreaSelected = session.date_creation;
         this.dateModifSelected = session.date_maj;
-        this.parcelleSelected = session.nom_parcelle;
+        this.nameOfparcelleSelected = session.nom_parcelle;
+        this.idOfparcelleSelected = session.id_parcelle;
         this.computePieChart(session);
         this.drawer?.open();
      })

@@ -11,7 +11,7 @@ const TOKEN_KEY = 'TOKEN_KEY';
 })
 export class AuthenticationService {
   
-  AUTH_SERVER_ADDRESS = 'https://www.agrotic.org/apexv3-sync';
+  AUTH_SERVER_ADDRESS = 'https:/apexvigne.agrotic.org/data/api';
   authenticationState = new BehaviorSubject(false);
   registerState = new BehaviorSubject(false);
   isOpen = false;
