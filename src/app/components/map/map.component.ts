@@ -24,6 +24,7 @@ export class MapComponent implements OnInit {
   dateModifSelected : string=  "";
   nameOfparcelleSelected : string=  "";
   idOfparcelleSelected : string = "";
+  campagneSelected : string = "";
   
 
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
@@ -43,7 +44,6 @@ export class MapComponent implements OnInit {
     this._translateLanguage();
     this.sessionService.retrieveData().then( (res) => {
       this.sessions = res as Session[];
-      console.log("sessions finales : "+JSON.stringify(this.sessions));
       this.setUpMap();
     })
     .catch(error => {
@@ -61,10 +61,16 @@ export class MapComponent implements OnInit {
   }
 
   setUpMap(){
-    let center = new LatLng(this.sessions[0].moyLat, this.sessions[0].moyLong);
-    const map = L.map('map').setView(center, 13);
+    let tabCenter = this.computeCenter();
+    let center = new LatLng(tabCenter[0], tabCenter[1]);
+    const map = L.map('map').setView(center, 1);
+    let tabOfLimitPoints = this.computeLimitPoint();
+    //SET THE ZOOM CORRECTLY WITH THE MOST DISTANT POINTS
+    map.fitBounds(new L.LatLngBounds(
+      [tabOfLimitPoints[0], tabOfLimitPoints[1]], 
+      [tabOfLimitPoints[2], tabOfLimitPoints[3]]));
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-      maxZoom: 20,
+      maxZoom: 18,
       subdomains:['mt0','mt1','mt2','mt3']
     }).addTo(map);
     for(const session of this.sessions){
@@ -93,6 +99,62 @@ export class MapComponent implements OnInit {
         this.drawer?.open();
      })
     }
+  }
+
+  computeLimitPoint(){
+    let minLat = 90;
+    let maxLat = -90;
+    let minLong = 180;
+    let maxLong = -180;
+    for(const session of this.sessions){
+      if(minLat >= session.moyLat){
+        minLat = session.moyLat;
+      }
+      if(maxLat <= session.moyLat){
+        maxLat = session.moyLat;
+      }
+      if(minLong >= session.moyLong){
+        minLong = session.moyLong;
+      }
+      if(maxLong <= session.moyLong){
+        maxLong = session.moyLong;
+      }
+    }
+    return [minLat, minLong, maxLat, maxLong];
+  }
+
+  getDistanceFromLatLonInKm(lat1 : number, lon1 : number, lat2 : number, lon2 : number) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = this.deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+  }
+
+  deg2rad(deg : number) {
+    return deg * (Math.PI/180)
+  }
+
+  changeCampagne(value : string){
+    this.campagneSelected = "option1";
+  }
+
+  computeCenter(){
+    let sumLat = 0;
+    let sumLong = 0
+    for(const session of this.sessions){
+      sumLat = sumLat + session.moyLat;
+      sumLong = sumLong + session.moyLong;
+    }
+    let moyenneLat = sumLat / this.sessions.length;
+    let moyenneLong = sumLong / this.sessions.length;
+    return [moyenneLat, moyenneLong];
   }
 
   computePieChart(session : Session){
@@ -129,10 +191,6 @@ export class MapComponent implements OnInit {
       //   }
       // },
       responsive: true,
-      // SI ON VEUT METTRE EN IMAGE, PREFERER :
-      // responsive: true,
-      // height: 80,
-      // width: 150,
       maintainAspectRatio: false,
       }
     });

@@ -27,7 +27,7 @@ const routes: Routes = [{
     component : HomeComponent,
     children: [
       {
-        path: 'parcelle-detail/:parcellename',
+        path: 'parcelle-detail/:idparcelle',
         component: ParcelleDetailComponent,
       },
       {

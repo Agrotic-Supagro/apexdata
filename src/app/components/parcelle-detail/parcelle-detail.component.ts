@@ -15,10 +15,7 @@ export class ParcelleDetailComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.idParcelle = params['idOfparcelleSelected'];
-      console.log("id parcelle : "+this.idParcelle)
-    });
+    this.idParcelle = this.route.snapshot.paramMap.get('idparcelle')!;
   }
 
 }
