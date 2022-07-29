@@ -46,7 +46,6 @@ export class RegisterDialogComponent implements OnInit {
 
   register(){
     this.auth.register(this.registrationForm.value).subscribe(async res => {
-      console.log('in register return: ', res);
       if (res.status) {
         this.router.navigateByUrl('/login');
         this.openSnackBar(this.successRegister.value);

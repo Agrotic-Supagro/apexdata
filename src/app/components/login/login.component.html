@@ -27,10 +27,10 @@
 
     <div class="langage">
         <mat-select (selectionChange)="changeLang($event.value)" [(value)]="langSelected" class="selector">
-            <mat-option value="fr">Français</mat-option>
-            <mat-option value="en">English</mat-option>
-            <mat-option value="es">Español</mat-option>
-            <mat-option value="zh">中国人</mat-option>
+            <mat-option value="fr" class="option">Français</mat-option>
+            <mat-option value="en" class="option">English</mat-option>
+            <mat-option value="es" class="option">Español</mat-option>
+            <mat-option value="zh" class="option">中国人</mat-option>
         </mat-select>
         <img [src]="languageIconPath" class="countryIcon">
     </div>

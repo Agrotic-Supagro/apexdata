@@ -16,10 +16,11 @@ export class SessionService {
     ) {}
   
 
-  retrieveData() {
+  retrieveSessionsData(year : string) {
     let sessions : Session[] = [];
     let jsonData = {
-      table: 'plotdata',
+      param: 'sessionData',
+      campagne : year,
       idUser: this.userService.getUser().id_utilisateur
     };
     return new Promise((resolve, reject) => {
@@ -37,11 +38,38 @@ export class SessionService {
     })
   }
 
+  retrieveCampagnesData(){
+    let years : string[] = [];
+    let jsonData = {
+      param: 'campagneData',
+      idUser: this.userService.getUser().id_utilisateur
+    };
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
+      .subscribe((res : any) => {
+        console.log(res.data);
+        for(const obj of res.data){
+          years.push(obj.year)
+        }
+        resolve(years);
+      },
+      error => {
+        reject(error)
+      })
+    })
+  }
+
+  getYearFromDate(sqlDate: string): string {
+    var arr1 = sqlDate.split(' ');
+    var arr2 = arr1[0].split('-');
+    return arr2[0];
+  }
+
   JSONtoParcelle(data : any){
     return new Session(
       data.id_session,
       data.id_parcelle,
-      data.date_creation,
+      data.date_session,
       data.date_maj,
       data.nom_parcelle, 
       data.moyLat,

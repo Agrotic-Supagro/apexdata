@@ -35,8 +35,7 @@ export class AuthenticationService {
       tap(async (res: any) => {
         if (res.status) {
           try{
-            window.localStorage.setItem(TOKEN_KEY, res.jwt)
-            console.log(res.data);
+            window.localStorage.setItem(TOKEN_KEY, res.jwt);
             const dataUser = {
               id_utilisateur: res.data.id_utilisateur,
               prenom: res.data.prenom,

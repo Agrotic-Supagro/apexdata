@@ -78,9 +78,7 @@ export class LoginComponent implements OnInit {
         email: this.email.value!,
         mot_de_passe: this.password.value!
     };
-    console.log('formulaire :', credentials);
     this.auth.login(credentials).subscribe(async res => {
-      console.log('in login return: ', res);
       if (res.status) {
         const navigationExtras: NavigationExtras = {
           state: {

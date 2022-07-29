@@ -4,7 +4,7 @@ export class Session{
     //DB received data
     id_session : string;
     id_parcelle : string;
-    date_creation : string;
+    date_session : string;
     date_maj : string;
     nom_parcelle : string;
     moyLat : number;
@@ -22,11 +22,11 @@ export class Session{
     ifvClasse : number = 0;
     ic_apex : string = "";
     
-    public constructor(id_session : string, id_parcelle : string, date_creation: string, date_maj: string, nom_parcelle : string, moyLat : string, moyLong : string,
+    public constructor(id_session : string, id_parcelle : string, date_session: string, date_maj: string, nom_parcelle : string, moyLat : string, moyLong : string,
         apex0 : string, apex1 : string, apex2 : string){
         this.id_session = id_session;
         this.id_parcelle = id_parcelle;
-        this.date_creation = this.transform(date_creation, 'dates');
+        this.date_session = this.transform(date_session, 'dates');
         this.date_maj = this.transform(date_maj, 'dates');
         this.nom_parcelle = nom_parcelle;
         this.moyLat = parseFloat(moyLat);

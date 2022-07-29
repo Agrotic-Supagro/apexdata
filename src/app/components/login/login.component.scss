@@ -8,6 +8,16 @@
     text-transform: uppercase;
 }
 
+.option{
+    color: black;
+    font-family: 'Sora', sans-serif;
+}
+
+.mat-select-value{    
+    color: white !important;
+    font-family: 'Sora', sans-serif;  
+}
+
 .register-button{
     min-width: 200px;
     font-size: 14px;
@@ -61,8 +71,13 @@
     display: flex;
 }
 
+::ng-deep .mat-select-value{    
+    color: white!important;  
+}
+
 .selector{
     width: 150px;
+    font-family: 'Sora', sans-serif;
 }
 
 .countryIcon{

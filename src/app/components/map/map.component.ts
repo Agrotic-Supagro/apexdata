@@ -14,8 +14,10 @@ import { SessionService } from 'src/app/services/session.service';
 })
 export class MapComponent implements OnInit {
 
-  sessions : Session[] = []
+  sessions : Session[] = [];
+  years : string[] = [];
   dataHasLoaded : boolean = false;
+  map! : L.Map;
   pieChart! : Chart;
   pieChartAlreadyBuilt = false;
   ifvClasseSelected : number = 0;
@@ -42,9 +44,16 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     this._translateLanguage();
-    this.sessionService.retrieveData().then( (res) => {
-      this.sessions = res as Session[];
-      this.setUpMap();
+    this.sessionService.retrieveCampagnesData().then( (res) => {
+      this.years = res as string[];
+      this.campagneSelected = this.years[0]; //Most recent year
+      this.sessionService.retrieveSessionsData(this.years[0]).then( (res) => {
+        this.sessions = res as Session[];
+        this.setUpMap();
+      })
+      .catch(error => {
+        console.log(error)
+      })
     })
     .catch(error => {
       console.log(error)
@@ -63,20 +72,20 @@ export class MapComponent implements OnInit {
   setUpMap(){
     let tabCenter = this.computeCenter();
     let center = new LatLng(tabCenter[0], tabCenter[1]);
-    const map = L.map('map').setView(center, 1);
+    this.map = L.map('map').setView(center, 1);
     let tabOfLimitPoints = this.computeLimitPoint();
     //SET THE ZOOM CORRECTLY WITH THE MOST DISTANT POINTS
-    map.fitBounds(new L.LatLngBounds(
+    this.map.fitBounds(new L.LatLngBounds(
       [tabOfLimitPoints[0], tabOfLimitPoints[1]], 
       [tabOfLimitPoints[2], tabOfLimitPoints[3]]));
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-      maxZoom: 18,
+      maxZoom: 22,
       subdomains:['mt0','mt1','mt2','mt3']
-    }).addTo(map);
+    }).addTo(this.map);
     for(const session of this.sessions){
       let marker = L.marker([session.moyLat, session.moyLong], {
-      }).addTo(map);
-      marker.bindPopup("Session réalisée le : <b>"+session.date_creation +"</b><br>"+
+      }).addTo(this.map);
+      marker.bindPopup("Session réalisée le : <b>"+session.date_session +"</b><br>"+
       "Sur la parcelle : <b>"+session.nom_parcelle +"</b><br>"+
       "<b>(dernière mise à jour le "+session.date_maj +")</b><br>", {
         closeButton: false
@@ -88,10 +97,9 @@ export class MapComponent implements OnInit {
         marker.closePopup()
       });
       marker.on('click',(ev)=>{
-        console.log('session parcelle: '+session.nom_parcelle);
         this.ifvClasseSelected = session.ifvClasse;
         this.icapexSelected = session.ic_apex;
-        this.dateCreaSelected = session.date_creation;
+        this.dateCreaSelected = session.date_session;
         this.dateModifSelected = session.date_maj;
         this.nameOfparcelleSelected = session.nom_parcelle;
         this.idOfparcelleSelected = session.id_parcelle;
@@ -141,8 +149,19 @@ export class MapComponent implements OnInit {
     return deg * (Math.PI/180)
   }
 
-  changeCampagne(value : string){
-    this.campagneSelected = "option1";
+  changeCampagne(year : string){
+    this.map.off();
+    this.map.remove();
+    let previousCampagneSelected = this.campagneSelected;
+    this.campagneSelected = year;
+    this.sessionService.retrieveSessionsData(year).then( (res) => {
+      this.sessions = res as Session[];
+      this.setUpMap();
+    })
+    .catch(error => {
+      console.log(error)
+      this.campagneSelected = previousCampagneSelected;
+    })
   }
 
   computeCenter(){
@@ -164,7 +183,7 @@ export class MapComponent implements OnInit {
     this.pieChart = new Chart(document.getElementById('pieChart') as HTMLCanvasElement, {
       type: 'pie',
       data: {
-          labels: [session.apexValues[0] + this.graphFullGrowth.value, session.apexValues[1] + this.graphSlowedGrowth.value, session.apexValues[2] + this.graphGrowthArrest.value],
+          labels: [session.apexValues[0] + '% Pleine croissance', session.apexValues[1] + '% Croissance ralentie', session.apexValues[2] + '% Arrêt de croissance'],
           datasets: [{
             backgroundColor: [
               '#2C6109',
