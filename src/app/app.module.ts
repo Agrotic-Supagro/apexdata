@@ -28,6 +28,7 @@ import { MapComponent } from './components/map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-detail.component';
+import {MatStepperModule} from '@angular/material/stepper';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -54,6 +55,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     MatButtonModule,
+    MatStepperModule,
     MatSidenavModule,
     MatGridListModule,
     BrowserModule,

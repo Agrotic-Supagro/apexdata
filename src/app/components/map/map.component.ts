@@ -27,6 +27,7 @@ export class MapComponent implements OnInit {
   nameOfparcelleSelected : string=  "";
   idOfparcelleSelected : string = "";
   campagneSelected : string = "";
+  drawerOpened = false;
   
 
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
@@ -78,16 +79,26 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(new L.LatLngBounds(
       [tabOfLimitPoints[0], tabOfLimitPoints[1]], 
       [tabOfLimitPoints[2], tabOfLimitPoints[3]]));
+    //BECAUSE SIZE OF MAP IS REDUCES IN SCSS : -1 ZOOM
+    this.map.setZoom(this.map.getZoom()-1);
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
       maxZoom: 22,
       subdomains:['mt0','mt1','mt2','mt3']
     }).addTo(this.map);
+    this.map.on('container-resize', (ev) => {
+      console.log("container resize")
+      setTimeout( () => { 
+        console.log("timeout done");
+        this.map.invalidateSize();
+      }, 400);
+    });
     for(const session of this.sessions){
       let marker = L.marker([session.moyLat, session.moyLong], {
+        riseOnHover : true,
       }).addTo(this.map);
       marker.bindPopup("Session réalisée le : <b>"+session.date_session +"</b><br>"+
       "Sur la parcelle : <b>"+session.nom_parcelle +"</b><br>"+
-      "<b>(dernière mise à jour le "+session.date_maj +")</b><br>", {
+      "<i>(dernière mise à jour le "+session.date_maj +")</i><br>", {
         closeButton: false
       });
       marker.on('mouseover',function(ev) {
@@ -105,8 +116,32 @@ export class MapComponent implements OnInit {
         this.idOfparcelleSelected = session.id_parcelle;
         this.computePieChart(session);
         this.drawer?.open();
+        if(!this.drawerOpened){
+          this.drawerOpened = true;
+          setTimeout( () => {
+            this.map.invalidateSize();
+            if(this.map.getZoom() < 17 ){
+              this.map.setZoomAround([session.moyLat, session.moyLong], 17);
+              this.map.flyTo([session.moyLat, session.moyLong]);
+            }
+            this.map.flyTo([session.moyLat, session.moyLong]);
+          }, 400)
+        }
+        else{
+          if(this.map.getZoom() < 17 ){
+            this.map.setZoomAround([session.moyLat, session.moyLong], 17);
+            this.map.flyTo([session.moyLat, session.moyLong]);
+          }
+          this.map.flyTo([session.moyLat, session.moyLong]);
+        }
      })
     }
+  }
+
+  closeDrawer(){
+    this.drawer?.close();
+    this.drawerOpened = false;
+    setTimeout( () => {this.map.invalidateSize()}, 400)
   }
 
   computeLimitPoint(){
@@ -129,24 +164,6 @@ export class MapComponent implements OnInit {
       }
     }
     return [minLat, minLong, maxLat, maxLong];
-  }
-
-  getDistanceFromLatLonInKm(lat1 : number, lon1 : number, lat2 : number, lon2 : number) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = this.deg2rad(lon2-lon1); 
-    var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    return d;
-  }
-
-  deg2rad(deg : number) {
-    return deg * (Math.PI/180)
   }
 
   changeCampagne(year : string){

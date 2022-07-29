@@ -1,13 +1,13 @@
-<div>
-    <div style="margin-top: 40px; margin-left: 50px; " class="row">
-        <h2 class="col-9">Vos sessions d'observations</h2>
-        <mat-select [(value)]="campagneSelected" (selectionChange)="changeCampagne($event.value)" class="col-3 campagneSelector">
+<div style="height: 100%;">
+    <div style="margin-top: 40px; max-height: 100px; width: 100%;" class="row">
+        <h2 class="col-9 col-lg-7 col-md-7 col-sm-5" style="margin-left: 40px;">Vos sessions d'observations</h2>
+        <mat-select [(value)]="campagneSelected" (selectionChange)="changeCampagne($event.value)" class="campagneSelector">
             <mat-option *ngFor="let year of years" value="{{year}}" class="option">Campagne {{year}}</mat-option>
         </mat-select>
     </div>
     <mat-drawer-container class="matDrawerContainer" autosize>
         <mat-drawer #drawer class="drawer" mode="side" position="end">
-            <button mat-icon-button (click)="drawer.close()">
+            <button mat-icon-button (click)="closeDrawer()">
                 <mat-icon>close
                 </mat-icon>
             </button>
@@ -47,8 +47,9 @@
         
         <div id="map" class="map"></div>
     </mat-drawer-container>
-
-    <p style="text-align: center; color: black; margin-top: 20px; padding: 20px;"><mat-icon>copyright</mat-icon> Modeste Professeur Valentin Flageul. Institut SupAgro.</p>
+        
+    <p style="text-align: center; color: black; margin-top: 5%;"><mat-icon>copyright</mat-icon> Modeste Professeur Valentin Flageul. Institut SupAgro.</p>
+    
 </div>
 
 
