@@ -45,7 +45,7 @@ export class SessionService {
       idUser: this.userService.getUser().id_utilisateur
     };
     return new Promise((resolve, reject) => {
-      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_campagnes_data.php`, jsonData)
       .subscribe((res : any) => {
         for(const obj of res.data){
           years.push(obj.year)

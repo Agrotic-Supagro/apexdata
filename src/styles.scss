@@ -22,22 +22,32 @@ input:-webkit-autofill{
     -webkit-text-fill-color: white !important;
 }
 
-$light-primary: mat.define-palette(mat.$indigo-palette);
-$light-accent: mat.define-palette(mat.$pink-palette);
-$light-theme: mat.define-light-theme((
+$light-select-primary: mat.define-palette(mat.$indigo-palette);
+$light-select-accent: mat.define-palette(mat.$pink-palette);
+$light-select-theme: mat.define-light-theme((
  color: (
-   primary: $light-primary,
-   accent: $light-accent,
+   primary: $light-select-primary,
+   accent: $light-select-accent,
  )
 ));
 
-$dark-primary: mat.define-palette(mat.$pink-palette);
-$dark-accent: mat.define-palette(mat.$blue-grey-palette);
-$dark-theme: mat.define-dark-theme((
+$light-stepper-primary: mat.define-palette(mat.$teal-palette);
+$light-stepper-accent: mat.define-palette(mat.$cyan-palette);
+$light-stepper-theme: mat.define-light-theme((
  color: (
-   primary: $dark-primary,
-   accent: $dark-accent,
+   primary: $light-stepper-primary,
+   accent: $light-stepper-accent,
  )
 ));
 
-@include mat.select-theme($light-theme);
+// $dark-primary: mat.define-palette(mat.$pink-palette);
+// $dark-accent: mat.define-palette(mat.$blue-grey-palette);
+// $dark-theme: mat.define-dark-theme((
+//  color: (
+//    primary: $dark-primary,
+//    accent: $dark-accent,
+//  )
+// ));
+
+@include mat.select-theme($light-select-theme);
+@include mat.stepper-theme($light-stepper-theme);

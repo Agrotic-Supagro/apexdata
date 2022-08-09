@@ -1,26 +1,58 @@
 <div style="height: 100%;">
     <div style="margin-top: 40px; max-height: 100px; width: 100%;" class="row">
-        <h2 class="col-9 col-lg-7 col-md-7 col-sm-5" style="margin-left: 40px;">Vos sessions d'observations</h2>
+        <h2 class="col-9 col-lg-7 col-md-7 col-sm-5 col-xs-2" style="margin-left: 50px;">Vos sessions d'observations</h2>
         <mat-select [(value)]="campagneSelected" (selectionChange)="changeCampagne($event.value)" class="campagneSelector">
             <mat-option *ngFor="let year of years" value="{{year}}" class="option">Campagne {{year}}</mat-option>
         </mat-select>
     </div>
+
+    <div class="solution">
+        <div class="arrow-icons">
+            <button mat-icon-button (click)="paginatorBack()" *ngIf="page > 0">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+        </div>
+        
+        <div class="stepper">
+            <mat-horizontal-stepper #stepper (selectionChange)="stepSelectionChange($event)">
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            <mat-step label="Semaine du 03/03">
+            </mat-step>
+            </mat-horizontal-stepper>
+        </div>
+        
+        <div class="arrow-icons">
+            <button mat-icon-button (click)="paginatorNext()" *ngIf="page < totalPages - 1">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+        </div>
+    </div>
+
     <mat-drawer-container class="matDrawerContainer" autosize>
         <mat-drawer #drawer class="drawer" mode="side" position="end">
             <button mat-icon-button (click)="closeDrawer()">
                 <mat-icon>close
                 </mat-icon>
             </button>
-            <h2>Détails session d'observation</h2>
+            <h2 class="parcelleLink" routerLinkActive="active" [routerLink]="['/home/parcelle-detail', idOfparcelleSelected]">{{ nameOfparcelleSelected }}</h2>
             
             <hr class="hr"/>
 
             <h5>Session d'observation réalisée le :</h5>
             <h5> <b> {{ dateCreaSelected }}</b> </h5>
-            <h5>Sur la parcelle : </h5>
-            <h5 class="parcelleLink" routerLinkActive="active" [routerLink]="['/home/parcelle-detail', idOfparcelleSelected]"> <b> {{ nameOfparcelleSelected }} </b> </h5>
-            <h5>Dernière mise à jour le :</h5>
-            <h5> <b> {{ dateModifSelected }} </b> </h5>
 
             <hr class="hr"/>
 
@@ -31,6 +63,11 @@
 
             <hr class="hr"/>
 
+            <h3 style="margin-top: 10px;">iC-ApeX</h3>
+            <h4 class="icapex" >{{ icapexSelected }}</h4>
+
+            <hr class="hr"/>
+
             <h3 style="margin-top: 10px;">Contrainte hydrique</h3>
             <h4 *ngIf="ifvClasseSelected == 0" class="absente" >Absente</h4>
             <h4 *ngIf="ifvClasseSelected == 1" class="moderee" >Modérée</h4>
@@ -38,17 +75,12 @@
             <h4 *ngIf="ifvClasseSelected == 3" class="forte" >Sévère</h4>
 
             <hr class="hr"/>
-
-            <h3 style="margin-top: 10px;">iC-ApeX</h3>
-            <h4 class="icapex" >{{ icapexSelected }}</h4>
-
-            <hr class="hr"/>
         </mat-drawer>
         
         <div id="map" class="map"></div>
     </mat-drawer-container>
         
-    <p style="text-align: center; color: black; margin-top: 5%;"><mat-icon>copyright</mat-icon> Modeste Professeur Valentin Flageul. Institut SupAgro.</p>
+    <p style="text-align: center; color: black; margin-top: 50px;"><mat-icon>copyright</mat-icon> Modeste Professeur Valentin Flageul. Institut SupAgro.</p>
     
 </div>
 
