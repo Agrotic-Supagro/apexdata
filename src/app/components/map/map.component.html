@@ -6,7 +6,7 @@
         </mat-select>
     </div>
 
-    <div class="solution">
+    <div class="stepperComponent">
         <div class="arrow-icons">
             <button mat-icon-button (click)="paginatorBack()" *ngIf="page > 0">
             <mat-icon>keyboard_arrow_left</mat-icon>
@@ -14,7 +14,7 @@
         </div>
         
         <div class="stepper">
-            <mat-horizontal-stepper #stepper (selectionChange)="stepSelectionChange($event)">
+            <mat-horizontal-stepper #stepper (selectionChange)="stepSelectionChange($event)" class="stepperContent">
             <mat-step label="Semaine du 03/03">
             </mat-step>
             <mat-step label="Semaine du 03/03">
@@ -41,6 +41,16 @@
         </div>
     </div>
 
+    <div class="radioGroup">
+        <mat-radio-group
+        [(ngModel)]="layerSelected">
+            <mat-radio-button class="radioButton" *ngFor="let layer of layers" [value]="layer.url" (change)="changeLayer($event)">
+                <mat-icon> {{ layer.icon }}</mat-icon>
+                {{layer.name}}
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+    
     <mat-drawer-container class="matDrawerContainer" autosize>
         <mat-drawer #drawer class="drawer" mode="side" position="end">
             <button mat-icon-button (click)="closeDrawer()">
@@ -52,7 +62,7 @@
             <hr class="hr"/>
 
             <h5>Session d'observation réalisée le :</h5>
-            <h5> <b> {{ dateCreaSelected }}</b> </h5>
+            <h5> <b> {{ dateSessionSelected }}</b> </h5>
 
             <hr class="hr"/>
 
@@ -65,6 +75,14 @@
 
             <h3 style="margin-top: 10px;">iC-ApeX</h3>
             <h4 class="icapex" >{{ icapexSelected }}</h4>
+
+            <hr class="hr"/>
+
+            <h3 style="margin-top: 10px;">Dynamique de croissance</h3>
+            <img *ngIf="dynamiqueSelected == 2" src="../../../assets/images/f0.jpg" />
+            <img *ngIf="dynamiqueSelected == 1" src="../../../assets/images/f1.jpg" />
+            <img *ngIf="dynamiqueSelected == 0" src="../../../assets/images/f2.jpg" />
+            <img *ngIf="dynamiqueSelected == -1" src="../../../assets/images/f3.jpg" />
 
             <hr class="hr"/>
 

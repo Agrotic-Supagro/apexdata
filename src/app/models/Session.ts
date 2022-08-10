@@ -12,6 +12,10 @@ export class Session{
     apex0 : number;
     apex1 : number;
     apex2 : number;
+    oldSessionapex0: number| undefined;
+    oldSessionapex1 : number | undefined;
+    oldSessionapex2 : number| undefined;
+    dynamique : number = 2;
 
     //Computed Data
     moyenne: number= 0;
@@ -63,6 +67,29 @@ export class Session{
                         this.ifvClasse = 2;
                     }
                 }
+            }
+        }
+    }
+
+    setOldSessionValues(oldapex0 : number, oldapex1 : number, oldapex2 : number){
+        this.oldSessionapex0 = oldapex0; 
+        this.oldSessionapex1 = oldapex1;
+        this.oldSessionapex2 = oldapex2;
+        this.computeDynamique();
+    }
+
+    private computeDynamique(){
+        // GESTION DYNAMIQUE CROISSANCE
+        // dynamique : 0 = stable, 1 = croissance, -1 = decroissance, neutre =2
+        this.dynamique = 0;
+        const moyenneOld = ((this.oldSessionapex0!) + (this.oldSessionapex1! / 2)) / (this.oldSessionapex0! + this.oldSessionapex1! + this.oldSessionapex2!);
+        const diffMoyenne = moyenneOld - this.moyenne;
+        if (diffMoyenne > 0.2) {
+            this.dynamique = -1;
+        } 
+        else {
+            if (diffMoyenne < -0.2) {
+            this.dynamique = 1;
             }
         }
     }

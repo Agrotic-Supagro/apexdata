@@ -25,9 +25,19 @@ export class SessionService {
     };
     return new Promise((resolve, reject) => {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
-      .subscribe((res : any) => {
+      .subscribe(async (res : any) => {
         for(const elem of res.data){
           let session = this.JSONtoParcelle(elem);
+          let jsonDataOldSession = {
+            param: 'oldsessionData',
+            idUser: this.userService.getUser().id_utilisateur,
+            idParcelle: session.id_parcelle,
+            dateSession : elem.date_session
+          }
+          await this.retrieveOldSessionData(jsonDataOldSession, session)
+          .catch(error => {
+            reject(error);
+          });
           sessions.push(session);
         }
         resolve(sessions);
@@ -35,6 +45,22 @@ export class SessionService {
       error => {
         reject(error)
       })
+    })
+  }
+
+  retrieveOldSessionData(jsonData : any, session : Session){
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_oldsession_data.php`, jsonData)
+      .subscribe( (res : any) => {
+        //IF WE HAVE ONE SESSION IN RESULT = SAME SESSION = NO PREVIOUS SESSION
+        if(res.data.length >= 2){
+          session.setOldSessionValues(parseInt(res.data[1].apex0), parseInt(res.data[1].apex1), parseInt(res.data[1].apex2));
+        }
+        resolve(session);
+      },
+      error => {
+        reject(error);
+      });
     })
   }
 

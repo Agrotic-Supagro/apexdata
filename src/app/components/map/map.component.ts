@@ -10,6 +10,8 @@ import { SessionService } from 'src/app/services/session.service';
 import {MatStepper, StepperOrientation} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { MatRadioChange } from '@angular/material/radio';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-map',
@@ -23,17 +25,42 @@ export class MapComponent implements OnInit {
   sessions : Session[] = [];
   years : string[] = [];
   dataHasLoaded : boolean = false;
+
   map! : L.Map;
   pieChart! : Chart;
   pieChartAlreadyBuilt = false;
+
   ifvClasseSelected : number = 0;
   icapexSelected : string = "";
-  dateCreaSelected : string=  "";
+  dynamiqueSelected : number = 2;
+  dateSessionSelected : string=  "";
   dateModifSelected : string=  "";
   nameOfparcelleSelected : string=  "";
   idOfparcelleSelected : string = "";
   campagneSelected : string = "";
+
   drawerOpened = false;
+  layers: any[] = [{
+    name : 'Vue street',
+    icon : 'streetview',
+    url : 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
+  },
+  {
+    name : 'Vue satellite',
+    icon : 'satellite',
+    url : 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
+  },
+  {
+    name : 'Vue hybride',
+    icon : 'texture',
+    url : 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'
+  }];
+
+  layerSelected: string = this.layers[2].url;
+  myLayer = L.tileLayer(this.layerSelected, {
+    maxZoom: 22,
+    subdomains:['mt0','mt1','mt2','mt3']
+  });
 
   // Max number of steps to show at a time in view, Change this to fit your need
   MAX_STEP = 4;
@@ -83,11 +110,11 @@ export class MapComponent implements OnInit {
         this.setUpMap();
       })
       .catch(error => {
-        console.log(error)
+        console.log("ERROR WHILE RETRIEVING SESSIONS DATA : "+error);
       })
     })
     .catch(error => {
-      console.log(error)
+      console.log("ERROR WHILE RETRIEVING CAMPAGNES DATA : "+error);
     })
   }
 
@@ -95,148 +122,24 @@ export class MapComponent implements OnInit {
     this.rerender();
     this.myStepper._getIndicatorType = () => 'number';
   }
-  
-  /**
-   * Change the page in view
-   */
-  pageChangeLogic(isForward = true) {
-    if (this.step < this.minStepAllowed || this.step > this.maxStepAllowed) {
-      if (isForward) {
-        this.page++;
-      } else {
-        this.page--;
-      }
-      this.changeMinMaxSteps(isForward);
-    }
-  }
-  
-  /**
-   * This will change min max steps allowed at any time in view
-   */
-  changeMinMaxSteps(isForward = true) {
-    const pageMultiple = this.page * this.MAX_STEP;
 
-    // maxStepAllowed will be the least value between minStep + MAX_STEP and total steps
-    // minStepAllowed will be the least value between pageMultiple and maxStep - MAX_STEP
-    if (pageMultiple + this.MAX_STEP - 1 <= this.totalSteps - 1) {
-      this.maxStepAllowed = pageMultiple + this.MAX_STEP - 1;
-      this.minStepAllowed = pageMultiple;
-    } else {
-      this.maxStepAllowed = this.totalSteps - 1;
-      this.minStepAllowed = this.maxStepAllowed - this.MAX_STEP + 1;
-    }
+  // _translateLanguage(): void {
+  //   this._translate.use("fr");
+  //   for(const elem of this.tabOfVars){
+  //     this._translate.get(elem.key).subscribe( res => {
+  //       elem.value = res;
+  //     })
+  //   }
+  // }
 
-    // This will set the next step into view after clicking on back / next paginator arrows
-    if (this.step < this.minStepAllowed || this.step > this.maxStepAllowed) {
-      if (isForward) {
-        this.step = this.minStepAllowed;
-      } else {
-        this.step = this.maxStepAllowed;
-      }
-      this.myStepper.selectedIndex = this.step;
-    }
-
-    console.log(
-      `page: ${this.page + 1}, step: ${this.step + 1}, minStepAllowed: ${this
-        .minStepAllowed + 1}, maxStepAllowed: ${this.maxStepAllowed + 1}`
-    );
-    this.rerender();
-  }
-  
-  /**
-   * Function to go back a page from the current step
-   */
-  paginatorBack() {
-    this.page--;
-    this.changeMinMaxSteps(false);
-  }
-  
-  /**
-   * Function to go next a page from the current step
-   */
-  paginatorNext() {
-    this.page++;
-    this.changeMinMaxSteps(true);
-  }
-  
-  /**
-   * Function to go back from the current step
-   */
-  goBack() {
-    if (this.step > 0) {
-      this.step--;
-      this.myStepper.previous();
-      this.pageChangeLogic(false);
-    }
-  }
-  
-  /**
-   * Function to go forward from the current step
-   */
-  goForward() {
-    if (this.step < this.totalSteps - 1) {
-      this.step++;
-      this.myStepper.next();
-      this.pageChangeLogic(true);
-    }
-  }
-  
-  /**
-   * This will display the steps in DOM based on the min max step indexes allowed in view
-   */
-  private rerender() {
-    console.log('redereerer')
-    const headers = this.elementRef.nativeElement.querySelectorAll(
-      "mat-step-header"
-    );
-
-    const lines = this.elementRef.nativeElement.querySelectorAll(
-      ".mat-stepper-horizontal-line"
-    );
-
-    // If the step index is in between min and max allowed indexes, display it into view, otherwise set as none
-    for (let h of headers) {
-      let str = h.getAttribute("ng-reflect-index");
-      if (
-        str !== null &&
-        Number.parseInt(str) >= this.minStepAllowed &&
-        Number.parseInt(str) <= this.maxStepAllowed
-      ) {
-        h.style.display = "flex";
-      } else {
-        h.style.display = "none";
-      }
-    }
-
-    // If the line index is between min and max allowed indexes, display it in view, otherwise set as none
-    // One thing to note here: length of lines is 1 less than length of headers
-    // For eg, if there are 8 steps, there will be 7 lines joining those 8 steps
-    for (let [index, l] of lines.entries()) {
-      if (index >= this.minStepAllowed && index < this.maxStepAllowed) {
-        l.style.display = "block";
-      } else {
-        l.style.display = "none";
-      }
-    }
-  }
-  
-  stepSelectionChange(event: StepperSelectionEvent) {
-    this.step = event.selectedIndex;
-    console.log(
-      " $event.selectedIndex: " +
-        event.selectedIndex +
-        "; Stepper.selectedIndex: " +
-        this.myStepper.selectedIndex
-    );
-  }
-
-  _translateLanguage(): void {
-    this._translate.use("fr");
-    for(const elem of this.tabOfVars){
-      this._translate.get(elem.key).subscribe( res => {
-        elem.value = res;
-      })
-    }
+  changeLayer(event : MatRadioChange){
+    this.layerSelected = event.value;
+    this.map.removeLayer(this.myLayer);
+    this.myLayer = L.tileLayer(this.layerSelected, {
+      maxZoom: 22,
+      subdomains:['mt0','mt1','mt2','mt3']
+    });
+    this.myLayer.addTo(this.map);
   }
 
   setUpMap(){
@@ -250,10 +153,7 @@ export class MapComponent implements OnInit {
       [tabOfLimitPoints[2], tabOfLimitPoints[3]]));
     //BECAUSE SIZE OF MAP IS REDUCES IN SCSS : -1 ZOOM
     this.map.setZoom(this.map.getZoom()-1);
-    L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-      maxZoom: 22,
-      subdomains:['mt0','mt1','mt2','mt3']
-    }).addTo(this.map);
+    this.myLayer.addTo(this.map);
     this.map.on('container-resize', (ev) => {
       console.log("container resize")
       setTimeout( () => { 
@@ -279,10 +179,11 @@ export class MapComponent implements OnInit {
       marker.on('click',(ev)=>{
         this.ifvClasseSelected = session.ifvClasse;
         this.icapexSelected = session.ic_apex;
-        this.dateCreaSelected = session.date_session;
+        this.dateSessionSelected = session.date_session;
         this.dateModifSelected = session.date_maj;
         this.nameOfparcelleSelected = session.nom_parcelle;
         this.idOfparcelleSelected = session.id_parcelle;
+        this.dynamiqueSelected = session.dynamique;
         this.computePieChart(session);
         this.drawer?.open();
         if(!this.drawerOpened){
@@ -400,6 +301,139 @@ export class MapComponent implements OnInit {
       }
     });
     this.pieChartAlreadyBuilt = true;
+  }
+
+  /**
+   * Change the page in view
+   */
+   pageChangeLogic(isForward = true) {
+    if (this.step < this.minStepAllowed || this.step > this.maxStepAllowed) {
+      if (isForward) {
+        this.page++;
+      } else {
+        this.page--;
+      }
+      this.changeMinMaxSteps(isForward);
+    }
+  }
+  
+  /**
+   * This will change min max steps allowed at any time in view
+   */
+  changeMinMaxSteps(isForward = true) {
+    const pageMultiple = this.page * this.MAX_STEP;
+
+    // maxStepAllowed will be the least value between minStep + MAX_STEP and total steps
+    // minStepAllowed will be the least value between pageMultiple and maxStep - MAX_STEP
+    if (pageMultiple + this.MAX_STEP - 1 <= this.totalSteps - 1) {
+      this.maxStepAllowed = pageMultiple + this.MAX_STEP - 1;
+      this.minStepAllowed = pageMultiple;
+    } else {
+      this.maxStepAllowed = this.totalSteps - 1;
+      this.minStepAllowed = this.maxStepAllowed - this.MAX_STEP + 1;
+    }
+
+    // This will set the next step into view after clicking on back / next paginator arrows
+    if (this.step < this.minStepAllowed || this.step > this.maxStepAllowed) {
+      if (isForward) {
+        this.step = this.minStepAllowed;
+      } else {
+        this.step = this.maxStepAllowed;
+      }
+      this.myStepper.selectedIndex = this.step;
+    }
+
+    console.log(
+      `page: ${this.page + 1}, step: ${this.step + 1}, minStepAllowed: ${this
+        .minStepAllowed + 1}, maxStepAllowed: ${this.maxStepAllowed + 1}`
+    );
+    this.rerender();
+  }
+  
+  /**
+   * Function to go back a page from the current step
+   */
+  paginatorBack() {
+    this.page--;
+    this.changeMinMaxSteps(false);
+  }
+  
+  /**
+   * Function to go next a page from the current step
+   */
+  paginatorNext() {
+    this.page++;
+    this.changeMinMaxSteps(true);
+  }
+  
+  /**
+   * Function to go back from the current step
+   */
+  goBack() {
+    if (this.step > 0) {
+      this.step--;
+      this.myStepper.previous();
+      this.pageChangeLogic(false);
+    }
+  }
+  
+  /**
+   * Function to go forward from the current step
+   */
+  goForward() {
+    if (this.step < this.totalSteps - 1) {
+      this.step++;
+      this.myStepper.next();
+      this.pageChangeLogic(true);
+    }
+  }
+  
+  /**
+   * This will display the steps in DOM based on the min max step indexes allowed in view
+   */
+  private rerender() {
+    const headers = this.elementRef.nativeElement.querySelectorAll(
+      "mat-step-header"
+    );
+
+    const lines = this.elementRef.nativeElement.querySelectorAll(
+      ".mat-stepper-horizontal-line"
+    );
+
+    // If the step index is in between min and max allowed indexes, display it into view, otherwise set as none
+    for (let h of headers) {
+      let str = h.getAttribute("ng-reflect-index");
+      if (
+        str !== null &&
+        Number.parseInt(str) >= this.minStepAllowed &&
+        Number.parseInt(str) <= this.maxStepAllowed
+      ) {
+        h.style.display = "flex";
+      } else {
+        h.style.display = "none";
+      }
+    }
+
+    // If the line index is between min and max allowed indexes, display it in view, otherwise set as none
+    // One thing to note here: length of lines is 1 less than length of headers
+    // For eg, if there are 8 steps, there will be 7 lines joining those 8 steps
+    for (let [index, l] of lines.entries()) {
+      if (index >= this.minStepAllowed && index < this.maxStepAllowed) {
+        l.style.display = "block";
+      } else {
+        l.style.display = "none";
+      }
+    }
+  }
+  
+  stepSelectionChange(event: StepperSelectionEvent) {
+    this.step = event.selectedIndex;
+    console.log(
+      " $event.selectedIndex: " +
+        event.selectedIndex +
+        "; Stepper.selectedIndex: " +
+        this.myStepper.selectedIndex
+    );
   }
 
 }

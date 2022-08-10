@@ -99,7 +99,6 @@ export class LoginComponent implements OnInit {
   }
 
   forgetpwd() {
-    console.log('ToDo > mot de passe oublié');
     this.presentPrompt();
   }
 

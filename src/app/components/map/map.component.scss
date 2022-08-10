@@ -1,5 +1,5 @@
 .matDrawerContainer { 
-    height: 75%; 
+    height: 80%; 
     width : auto;
     margin-top: 20px;
     margin-left: 50px;
@@ -19,7 +19,33 @@
     font-family: 'Sora', sans-serif;
 }
 
-.solution{
+.viewSelector{
+    width: 200px;
+    max-height: 40px;
+    margin-left: 50px; 
+    margin-right: auto;
+    align-items: center;
+    display: flex;
+    border-radius: 15px;
+    border: 1px solid black;
+    font-family: 'Sora', sans-serif;
+}
+
+.radioGroup{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.mat-icon {
+    vertical-align: middle;
+}
+
+.radioButton{
+    margin-right: 50px;
+    font-family: 'Sora', sans-serif;
+}
+
+.stepperComponent{
     margin-top: 20px;
     margin-left: 50px;
     margin-right: 50px;
@@ -29,6 +55,10 @@
 .stepper{
     width: 100%;
     flex-grow: 2;
+}
+
+.stepperContent{
+    font-family: 'Sora', sans-serif;
 }
 
 .arrow-icons{

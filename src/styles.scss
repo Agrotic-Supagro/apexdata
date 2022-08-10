@@ -40,6 +40,15 @@ $light-stepper-theme: mat.define-light-theme((
  )
 ));
 
+$light-radio-primary: mat.define-palette(mat.$teal-palette);
+$light-radio-accent: mat.define-palette(mat.$teal-palette);
+$light-radio-theme: mat.define-light-theme((
+ color: (
+   primary: $light-radio-primary,
+   accent: $light-radio-accent,
+ )
+));
+
 // $dark-primary: mat.define-palette(mat.$pink-palette);
 // $dark-accent: mat.define-palette(mat.$blue-grey-palette);
 // $dark-theme: mat.define-dark-theme((
@@ -51,3 +60,4 @@ $light-stepper-theme: mat.define-light-theme((
 
 @include mat.select-theme($light-select-theme);
 @include mat.stepper-theme($light-stepper-theme);
+@include mat.radio-theme($light-radio-theme);
