@@ -15,21 +15,7 @@
         
         <div class="stepper">
             <mat-horizontal-stepper #stepper (selectionChange)="stepSelectionChange($event)" class="stepperContent">
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
-            </mat-step>
-            <mat-step label="Semaine du 03/03">
+            <mat-step *ngFor="let week of weeks" label="Semaine du {{ week.firstDay }}">
             </mat-step>
             </mat-horizontal-stepper>
         </div>
@@ -40,7 +26,11 @@
             </button>
         </div>
     </div>
-    
+
+    <div *ngIf="!dataHasLoaded" class="row spinner">
+        <mat-spinner [diameter]="30" style="margin-right: 10px;"></mat-spinner> Veuillez patienter...
+    </div>
+
     <mat-drawer-container class="matDrawerContainer" autosize>
         <mat-drawer #drawer class="drawer" mode="side" position="end">
             <button mat-icon-button (click)="closeDrawer()">

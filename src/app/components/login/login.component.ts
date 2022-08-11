@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
               ) { }
 
   ngOnInit() {
-    console.log("Navigator Language : "+navigator.language);
     this.langSelected = "fr";
     this._translateLanguage();
   }

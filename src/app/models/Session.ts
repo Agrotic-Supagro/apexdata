@@ -15,9 +15,9 @@ export class Session{
     oldSessionapex0: number| undefined;
     oldSessionapex1 : number | undefined;
     oldSessionapex2 : number| undefined;
-    dynamique : number = 2;
 
     //Computed Data
+    dynamique : number = 2;
     moyenne: number= 0;
     tauxApex0: number= 0;
     tauxApex1: number= 0;
@@ -106,5 +106,5 @@ export class Session{
           return arr2[0] + ':' + arr2[1];
         }
         return value;
-      }
+    }
 }

@@ -57,6 +57,20 @@
     align-items: center;
 }
 
+.spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
+    stroke: teal;
+}
+
+.mat-step-header {
+    pointer-events: none !important;
+}
+
+.spinner{
+    margin-left: 50px;
+    margin-right: 50px;
+    align-items: center;
+}
+
 .option{
     color: black;
     font-family: 'Sora', sans-serif;

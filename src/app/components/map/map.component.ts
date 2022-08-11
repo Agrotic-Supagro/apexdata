@@ -10,6 +10,7 @@ import { SessionService } from 'src/app/services/session.service';
 import {MatStepper, StepperOrientation} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-map',
@@ -22,6 +23,8 @@ export class MapComponent implements OnInit {
 
   sessions : Session[] = [];
   years : string[] = [];
+  weeks : any[] = [];
+  firstDaysOfWeeks : string[] = [];
   dataHasLoaded : boolean = false;
 
   map! : L.Map;
@@ -36,6 +39,7 @@ export class MapComponent implements OnInit {
   nameOfparcelleSelected : string=  "";
   idOfparcelleSelected : string = "";
   campagneSelected : string = "";
+  weekSelected : string = "";
 
   drawerOpened = false;
   
@@ -53,10 +57,10 @@ export class MapComponent implements OnInit {
     "Vue Street": this.street
   };
 
-  // Max number of steps to show at a time in view, Change this to fit your need
+  // Max number of steps to show at a time in view
   MAX_STEP = 4;
-  // Total steps included in mat-stepper in template, Change this to fit your need
-  totalSteps = 8;
+  // Total steps included in mat-stepper in template
+  totalSteps! : number;
   // Current page from paginator
   page = 0;
   // Current active step in mat-stepper
@@ -66,7 +70,7 @@ export class MapComponent implements OnInit {
   // Max index of step to show in view
   maxStepAllowed = this.MAX_STEP - 1;
   // Number of total possible pages
-  totalPages = Math.ceil(this.totalSteps / this.MAX_STEP);
+  totalPages! : number;
 
   @ViewChild("stepper") private myStepper!: MatStepper;
   
@@ -96,12 +100,23 @@ export class MapComponent implements OnInit {
     this.sessionService.retrieveCampagnesData().then( (res) => {
       this.years = res as string[];
       this.campagneSelected = this.years[0]; //Most recent year
-      this.sessionService.retrieveSessionsData(this.years[0]).then( (res) => {
-        this.sessions = res as Session[];
-        this.setUpMap();
+      this.sessionService.retrieveWeeksData(this.campagneSelected).then( (res) => {
+        this.weeks = res as any[];
+        this.weekSelected = this.weeks[0].weekNumber; //Most older week
+        this.totalSteps = this.weeks.length;
+        this.totalPages = Math.ceil(this.totalSteps / this.MAX_STEP);
+        this.sessionService.retrieveSessionsData(this.campagneSelected, this.weekSelected).then( (res) => {
+          this.sessions = res as Session[];
+          this.rerender();
+          this.dataHasLoaded = true;
+          this.setUpMap();
+        })
+        .catch(error => {
+          console.log("ERROR WHILE RETRIEVING SESSIONS DATA : "+error);
+        })
       })
       .catch(error => {
-        console.log("ERROR WHILE RETRIEVING SESSIONS DATA : "+error);
+        console.log("ERROR WHILE RETRIEVING WEEKS DATA : "+error);
       })
     })
     .catch(error => {
@@ -110,7 +125,6 @@ export class MapComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.rerender();
     this.myStepper._getIndicatorType = () => 'number';
   }
 
@@ -219,17 +233,63 @@ export class MapComponent implements OnInit {
   }
 
   changeCampagne(year : string){
-    this.map.off();
-    this.map.remove();
+    this.dataHasLoaded = false;
     let previousCampagneSelected = this.campagneSelected;
     this.campagneSelected = year;
-    this.sessionService.retrieveSessionsData(year).then( (res) => {
+    this.sessionService.retrieveWeeksData(this.campagneSelected).then( (res) => {
+      this.weeks = res as any[];
+      let previousWeekSelected = this.weekSelected;
+      this.weekSelected = this.weeks[0].weekNumber; //Most older week
+      this.sessionService.retrieveSessionsData(this.campagneSelected, this.weekSelected).then( (res) => {
+        this.map.off();
+        this.map.remove();
+        this.dataHasLoaded = true;
+        this.sessions = res as Session[];
+        this.setUpMap();
+      })
+      .catch(error => {
+        console.log("ERROR WHILE RETRIEVING SESSIONS DATA : "+error);
+        this.weekSelected = previousWeekSelected;
+        this.campagneSelected = previousCampagneSelected;
+      })
+    })
+    .catch(error => {
+      console.log("ERROR WHILE RETRIEVING WEEKS DATA : "+error);
+      this.campagneSelected = previousCampagneSelected;
+    })
+  }
+
+  stepSelectionChange(event: StepperSelectionEvent) {
+    this.step = event.selectedIndex;
+    // console.log(
+    //   " $event.selectedIndex: " +
+    //     event.selectedIndex +
+    //     "; Stepper.selectedIndex: " +
+    //     this.myStepper.selectedIndex
+    // );
+    let stepLabel = event.selectedStep.label;
+    let date = stepLabel.split(' ')[2];
+    for(const week of this.weeks){
+      if(week.firstDay == date){
+        this.changeWeek(week.weekNumber);
+      }
+    }
+  }
+
+  changeWeek(weekNumber : string){
+    this.dataHasLoaded = false;
+    let previousWeekSelected = this.weekSelected;
+    this.weekSelected = weekNumber;
+    this.sessionService.retrieveSessionsData(this.campagneSelected, this.weekSelected).then( (res) => {
+      this.map.off();
+      this.map.remove();
+      this.dataHasLoaded = true;
       this.sessions = res as Session[];
       this.setUpMap();
     })
     .catch(error => {
-      console.log(error)
-      this.campagneSelected = previousCampagneSelected;
+      console.log("ERROR WHILE RETRIEVING SESSIONS DATAaaa : "+error);
+      this.weekSelected = previousWeekSelected;
     })
   }
 
@@ -325,10 +385,10 @@ export class MapComponent implements OnInit {
       this.myStepper.selectedIndex = this.step;
     }
 
-    console.log(
-      `page: ${this.page + 1}, step: ${this.step + 1}, minStepAllowed: ${this
-        .minStepAllowed + 1}, maxStepAllowed: ${this.maxStepAllowed + 1}`
-    );
+    // console.log(
+    //   `page: ${this.page + 1}, step: ${this.step + 1}, minStepAllowed: ${this
+    //     .minStepAllowed + 1}, maxStepAllowed: ${this.maxStepAllowed + 1}`
+    // );
     this.rerender();
   }
   
@@ -406,16 +466,6 @@ export class MapComponent implements OnInit {
         l.style.display = "none";
       }
     }
-  }
-  
-  stepSelectionChange(event: StepperSelectionEvent) {
-    this.step = event.selectedIndex;
-    console.log(
-      " $event.selectedIndex: " +
-        event.selectedIndex +
-        "; Stepper.selectedIndex: " +
-        this.myStepper.selectedIndex
-    );
   }
 
 }

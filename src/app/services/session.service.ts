@@ -16,11 +16,12 @@ export class SessionService {
     ) {}
   
 
-  retrieveSessionsData(year : string) {
+  retrieveSessionsData(year : string, week : string) {
     let sessions : Session[] = [];
     let jsonData = {
       param: 'sessionData',
       campagne : year,
+      semaine : week,
       idUser: this.userService.getUser().id_utilisateur
     };
     return new Promise((resolve, reject) => {
@@ -82,6 +83,39 @@ export class SessionService {
         reject(error)
       })
     })
+  }
+
+  retrieveWeeksData(year : string){
+    let weeks : any[] = [];
+    let jsonData = {
+      param: 'weekData',
+      campagne : year,
+      idUser: this.userService.getUser().id_utilisateur
+    };
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_weeks_data.php`, jsonData)
+      .subscribe((res : any) => {
+        for(const obj of res.data){
+          let month = obj.date_session.split(' ')[0].split('-')[1];
+          let day = this.getFirstDayOfWeek(obj.date_session);
+          weeks.push({weekNumber : obj.week, firstDay : day+"/"+month});
+        }
+        resolve(weeks);
+      },
+      error => {
+        reject(error)
+      })
+    })
+  }
+
+  getFirstDayOfWeek(sqlDate : string) {
+    const date = new Date(sqlDate);
+    const day = date.getDay();
+    //day of month - day of week (-6 if Sunday), otherwise +1
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    const firstDayDate = new Date(date.setDate(diff));
+    const firstDay = firstDayDate.toDateString().split(' ')[2];
+    return firstDay;
   }
 
   getYearFromDate(sqlDate: string): string {

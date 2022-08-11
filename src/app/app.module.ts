@@ -30,6 +30,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-detail.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatStepperModule,
     MatSidenavModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
     MatGridListModule,
     BrowserModule,
