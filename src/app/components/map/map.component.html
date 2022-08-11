@@ -40,16 +40,6 @@
             </button>
         </div>
     </div>
-
-    <div class="radioGroup">
-        <mat-radio-group
-        [(ngModel)]="layerSelected">
-            <mat-radio-button class="radioButton" *ngFor="let layer of layers" [value]="layer.url" (change)="changeLayer($event)">
-                <mat-icon> {{ layer.icon }}</mat-icon>
-                {{layer.name}}
-            </mat-radio-button>
-        </mat-radio-group>
-    </div>
     
     <mat-drawer-container class="matDrawerContainer" autosize>
         <mat-drawer #drawer class="drawer" mode="side" position="end">

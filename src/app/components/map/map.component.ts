@@ -10,8 +10,6 @@ import { SessionService } from 'src/app/services/session.service';
 import {MatStepper, StepperOrientation} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { MatRadioChange } from '@angular/material/radio';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-map',
@@ -40,27 +38,20 @@ export class MapComponent implements OnInit {
   campagneSelected : string = "";
 
   drawerOpened = false;
-  layers: any[] = [{
-    name : 'Vue street',
-    icon : 'streetview',
-    url : 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
-  },
-  {
-    name : 'Vue satellite',
-    icon : 'satellite',
-    url : 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
-  },
-  {
-    name : 'Vue hybride',
-    icon : 'texture',
-    url : 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'
-  }];
-
-  layerSelected: string = this.layers[2].url;
-  myLayer = L.tileLayer(this.layerSelected, {
+  
+  street = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
     maxZoom: 22,
     subdomains:['mt0','mt1','mt2','mt3']
   });
+  satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 22,
+    subdomains:['mt0','mt1','mt2','mt3']
+  });
+
+  baseMaps = {
+    "Vue Satellite": this.satellite,
+    "Vue Street": this.street
+  };
 
   // Max number of steps to show at a time in view, Change this to fit your need
   MAX_STEP = 4;
@@ -132,20 +123,12 @@ export class MapComponent implements OnInit {
   //   }
   // }
 
-  changeLayer(event : MatRadioChange){
-    this.layerSelected = event.value;
-    this.map.removeLayer(this.myLayer);
-    this.myLayer = L.tileLayer(this.layerSelected, {
-      maxZoom: 22,
-      subdomains:['mt0','mt1','mt2','mt3']
-    });
-    this.myLayer.addTo(this.map);
-  }
-
   setUpMap(){
     let tabCenter = this.computeCenter();
     let center = new LatLng(tabCenter[0], tabCenter[1]);
     this.map = L.map('map').setView(center, 1);
+    this.satellite.addTo(this.map);
+    L.control.layers(this.baseMaps).addTo(this.map);
     let tabOfLimitPoints = this.computeLimitPoint();
     //SET THE ZOOM CORRECTLY WITH THE MOST DISTANT POINTS
     this.map.fitBounds(new L.LatLngBounds(
@@ -153,7 +136,6 @@ export class MapComponent implements OnInit {
       [tabOfLimitPoints[2], tabOfLimitPoints[3]]));
     //BECAUSE SIZE OF MAP IS REDUCES IN SCSS : -1 ZOOM
     this.map.setZoom(this.map.getZoom()-1);
-    this.myLayer.addTo(this.map);
     this.map.on('container-resize', (ev) => {
       console.log("container resize")
       setTimeout( () => { 
