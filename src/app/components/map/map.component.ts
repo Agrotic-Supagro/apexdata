@@ -4,13 +4,12 @@ import { TranslateService } from '@ngx-translate/core';
 import Chart from 'chart.js/auto'
 import * as L from 'leaflet';
 import { LatLng } from 'leaflet';
-import { map, Observable } from 'rxjs';
 import { Session } from 'src/app/models/Session';
 import { SessionService } from 'src/app/services/session.service';
 import {MatStepper, StepperOrientation} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { ThemePalette } from '@angular/material/core';
+import 'leaflet.control.opacity';
 
 @Component({
   selector: 'app-map',
@@ -40,6 +39,7 @@ export class MapComponent implements OnInit {
   idOfparcelleSelected : string = "";
   campagneSelected : string = "";
   weekSelected : string = "";
+  heureSessionSelected : string = "";
 
   drawerOpened = false;
   
@@ -54,6 +54,10 @@ export class MapComponent implements OnInit {
 
   baseMaps = {
     "Vue Satellite": this.satellite,
+    "Vue Street": this.street
+  };
+
+  addedMaps = {
     "Vue Street": this.street
   };
 
@@ -142,12 +146,18 @@ export class MapComponent implements OnInit {
     let center = new LatLng(tabCenter[0], tabCenter[1]);
     this.map = L.map('map').setView(center, 1);
     this.satellite.addTo(this.map);
-    L.control.layers(this.baseMaps).addTo(this.map);
+    L.control.layers(undefined, this.baseMaps).addTo(this.map);
+    L.control.opacity(this.baseMaps, {
+        label: 'Transparence',})
+    .addTo(this.map);
     let tabOfLimitPoints = this.computeLimitPoint();
     //SET THE ZOOM CORRECTLY WITH THE MOST DISTANT POINTS
     this.map.fitBounds(new L.LatLngBounds(
       [tabOfLimitPoints[0], tabOfLimitPoints[1]], 
-      [tabOfLimitPoints[2], tabOfLimitPoints[3]]));
+      [tabOfLimitPoints[2], tabOfLimitPoints[3]]),
+      {
+        maxZoom : 20,
+      });
     //BECAUSE SIZE OF MAP IS REDUCES IN SCSS : -1 ZOOM
     this.map.setZoom(this.map.getZoom()-1);
     this.map.on('container-resize', (ev) => {
@@ -180,6 +190,7 @@ export class MapComponent implements OnInit {
         this.nameOfparcelleSelected = session.nom_parcelle;
         this.idOfparcelleSelected = session.id_parcelle;
         this.dynamiqueSelected = session.dynamique;
+        this.heureSessionSelected = session.heure_session;
         this.computePieChart(session);
         this.drawer?.open();
         if(!this.drawerOpened){
@@ -241,11 +252,13 @@ export class MapComponent implements OnInit {
       let previousWeekSelected = this.weekSelected;
       this.weekSelected = this.weeks[0].weekNumber; //Most older week
       this.sessionService.retrieveSessionsData(this.campagneSelected, this.weekSelected).then( (res) => {
-        this.map.off();
-        this.map.remove();
-        this.dataHasLoaded = true;
-        this.sessions = res as Session[];
-        this.setUpMap();
+      this.sessions = res as Session[];
+      if(this.sessions[0].date_session.split('/')[2] == this.campagneSelected){
+          this.map.off();
+          this.map.remove();
+          this.dataHasLoaded = true;
+          this.setUpMap();   
+      }
       })
       .catch(error => {
         console.log("ERROR WHILE RETRIEVING SESSIONS DATA : "+error);
@@ -281,11 +294,13 @@ export class MapComponent implements OnInit {
     let previousWeekSelected = this.weekSelected;
     this.weekSelected = weekNumber;
     this.sessionService.retrieveSessionsData(this.campagneSelected, this.weekSelected).then( (res) => {
-      this.map.off();
-      this.map.remove();
-      this.dataHasLoaded = true;
       this.sessions = res as Session[];
-      this.setUpMap();
+      if(this.sessions[0].weekNumber == parseInt(this.weekSelected)){
+        this.map.off();
+        this.map.remove();
+        this.dataHasLoaded = true;
+        this.setUpMap();
+      }
     })
     .catch(error => {
       console.log("ERROR WHILE RETRIEVING SESSIONS DATAaaa : "+error);
@@ -382,7 +397,8 @@ export class MapComponent implements OnInit {
       } else {
         this.step = this.maxStepAllowed;
       }
-      this.myStepper.selectedIndex = this.step;
+      //To focus the first/last step of the page when page change
+      //this.myStepper.selectedIndex = this.step;
     }
 
     // console.log(

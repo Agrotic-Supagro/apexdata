@@ -26,6 +26,7 @@
     "bootstrap": "^5.2.0",
     "chart.js": "^3.8.2",
     "leaflet": "^1.8.0",
+    "leaflet.control.opacity": "^1.6.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

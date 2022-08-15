@@ -28,7 +28,7 @@ export class SessionService {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
       .subscribe(async (res : any) => {
         for(const elem of res.data){
-          let session = this.JSONtoParcelle(elem);
+          let session = this.JSONtoSession(elem, parseInt(week));
           let jsonDataOldSession = {
             param: 'oldsessionData',
             idUser: this.userService.getUser().id_utilisateur,
@@ -96,9 +96,7 @@ export class SessionService {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_weeks_data.php`, jsonData)
       .subscribe((res : any) => {
         for(const obj of res.data){
-          let month = obj.date_session.split(' ')[0].split('-')[1];
-          let day = this.getFirstDayOfWeek(obj.date_session);
-          weeks.push({weekNumber : obj.week, firstDay : day+"/"+month});
+          weeks.push({weekNumber : obj.week, firstDay : this.getFirstDayOfWeek(obj.date_session)});
         }
         resolve(weeks);
       },
@@ -114,8 +112,9 @@ export class SessionService {
     //day of month - day of week (-6 if Sunday), otherwise +1
     const diff = date.getDate() - day + (day === 0 ? -6 : 1);
     const firstDayDate = new Date(date.setDate(diff));
-    const firstDay = firstDayDate.toDateString().split(' ')[2];
-    return firstDay;
+    const tab = firstDayDate.toLocaleDateString().split('/');
+    const res = tab[0] + "/" + tab[1];
+    return res;
   }
 
   getYearFromDate(sqlDate: string): string {
@@ -124,7 +123,7 @@ export class SessionService {
     return arr2[0];
   }
 
-  JSONtoParcelle(data : any){
+  JSONtoSession(data : any, weekNumber : number){
     return new Session(
       data.id_session,
       data.id_parcelle,
@@ -136,6 +135,7 @@ export class SessionService {
       data.apex0,
       data.apex1,
       data.apex2,
+      weekNumber
     )
   }
 

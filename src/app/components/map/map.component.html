@@ -41,12 +41,11 @@
             
             <hr class="hr"/>
 
-            <h5>Session d'observation réalisée le :</h5>
-            <h5> <b> {{ dateSessionSelected }}</b> </h5>
+            <h4>Croissance au : </h4>
+            <h5> <b> {{ dateSessionSelected }}</b> à <b> {{ heureSessionSelected }}</b> </h5>
 
             <hr class="hr"/>
-
-            <h3 style="margin-top: 10px;">Croissance</h3>
+            
             <div class="pie">
                 <canvas id="pieChart"></canvas>
             </div>
@@ -66,7 +65,7 @@
 
             <hr class="hr"/>
 
-            <h3 style="margin-top: 10px;">Contrainte hydrique</h3>
+            <h3 style="margin-top: 10px;">Interprétation de la contrainte hydrique</h3>
             <h4 *ngIf="ifvClasseSelected == 0" class="absente" >Absente</h4>
             <h4 *ngIf="ifvClasseSelected == 1" class="moderee" >Modérée</h4>
             <h4 *ngIf="ifvClasseSelected == 2" class="importante" >Forte</h4>
@@ -77,7 +76,7 @@
         
         <div id="map" class="map"></div>
     </mat-drawer-container>
-        
+
     <p style="text-align: center; color: black; margin-top: 50px;"><mat-icon>copyright</mat-icon> Modeste Professeur Valentin Flageul. Institut SupAgro.</p>
     
 </div>
