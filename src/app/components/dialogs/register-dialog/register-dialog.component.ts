@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -21,36 +20,21 @@ export class RegisterDialogComponent implements OnInit {
     structure: new FormControl('', [Validators.required, Validators.maxLength(40)]),
   });
 
-  //Trad objects
-  successRegister = { key : "successRegister", value : ""};
-  emailAlreadyExists = { key : "emailAlreadyExists", value : ""};
-  tabOfVars = [this.successRegister, this.emailAlreadyExists];
-
   constructor(
-    private _translate: TranslateService,
     private auth: AuthenticationService,
     private router: Router,
     public _snackBar : MatSnackBar) {}
 
   ngOnInit(): void {
-    this._translateLanguage();
-  }
-
-  _translateLanguage(): void {
-    for(const elem of this.tabOfVars){
-      this._translate.get(elem.key).subscribe( res => {
-        elem.value = res;
-      })
-    }
   }
 
   register(){
     this.auth.register(this.registrationForm.value).subscribe(async res => {
       if (res.status) {
         this.router.navigateByUrl('/login');
-        this.openSnackBar(this.successRegister.value);
+        this.openSnackBar('Inscription réussie ! Vous pouvez vous connecter.');
       } else {
-        this.openSnackBar(this.emailAlreadyExists.value);
+        this.openSnackBar('Cet e-mail est déjà inscrit. Si vous ne vous souvenez pas de votre mot de passe utilisez la procédure mot de passe oublié, merci.');
         this.registrationForm.controls.email.setValue('');
       }
     });

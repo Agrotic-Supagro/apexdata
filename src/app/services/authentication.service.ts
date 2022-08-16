@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 const TOKEN_KEY = 'TOKEN_KEY';
 
@@ -19,6 +20,7 @@ export class AuthenticationService {
   constructor(
               private  httpClient: HttpClient,
               private router: Router,
+              private userService : UserService,
     ) {
   }
 
@@ -45,6 +47,7 @@ export class AuthenticationService {
               structure: res.data.structure
             };
             window.localStorage.setItem('user', JSON.stringify(dataUser));
+            this.userService.initUser();
             this.authenticationState.next(true);
             const data = {
               jwt: res.jwt,

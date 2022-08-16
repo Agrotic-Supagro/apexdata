@@ -14,7 +14,6 @@
 }
 
 .mat-select-value{    
-    color: white !important;
     font-family: 'Sora', sans-serif;  
 }
 
@@ -71,9 +70,9 @@
     display: flex;
 }
 
-::ng-deep .mat-select-value{    
-    color: white!important;  
-}
+// ::ng-deep .mat-select-value{    
+//     color: white!important;  
+// }
 
 .selector{
     width: 150px;

@@ -31,11 +31,12 @@ import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-d
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, "https://www.agrotic.org/apexv3-sync/traduction/assets/i18n/", ".json");
-}
+// export function HttpLoaderFactory(http: HttpClient) {
+//   return new TranslateHttpLoader(http, "https://www.agrotic.org/apexv3-sync/traduction/assets/i18n/", ".json");
+// }
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
     ExportComponent,
     AccountComponent,
     MapComponent,
-    ParcelleDetailComponent
+    ParcelleDetailComponent,
+    PageNotFoundComponent
   ],
   imports: [
     MatButtonModule,
@@ -76,13 +78,13 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatIconModule,
     LeafletModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
+    // TranslateModule.forRoot({
+    //   loader: {
+    //     provide: TranslateLoader,
+    //     useFactory: HttpLoaderFactory,
+    //     deps: [HttpClient]
+    //   }
+    // }),
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000, verticalPosition : 'top'}},

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { Session } from '../models/Session';
+import { Campagne } from '../models/Campagne';
+import { Week } from '../models/Week';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +68,7 @@ export class SessionService {
   }
 
   retrieveCampagnesData(){
-    let years : string[] = [];
+    let campagnes : Campagne[] = [];
     let jsonData = {
       param: 'campagneData',
       idUser: this.userService.getUser().id_utilisateur
@@ -75,9 +77,9 @@ export class SessionService {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_campagnes_data.php`, jsonData)
       .subscribe((res : any) => {
         for(const obj of res.data){
-          years.push(obj.year)
+          campagnes.push(new Campagne(obj.year));
         }
-        resolve(years);
+        resolve(campagnes);
       },
       error => {
         reject(error)
@@ -86,7 +88,7 @@ export class SessionService {
   }
 
   retrieveWeeksData(year : string){
-    let weeks : any[] = [];
+    let weeks : Week[] = [];
     let jsonData = {
       param: 'weekData',
       campagne : year,
@@ -96,7 +98,7 @@ export class SessionService {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_weeks_data.php`, jsonData)
       .subscribe((res : any) => {
         for(const obj of res.data){
-          weeks.push({weekNumber : obj.week, firstDay : this.getFirstDayOfWeek(obj.date_session)});
+          weeks.push(new Week(obj.week, this.getFirstDayOfWeek(obj.date_session)));
         }
         resolve(weeks);
       },

@@ -2,7 +2,7 @@
     <div style="margin-top: 40px; max-height: 100px; width: 100%;" class="row">
         <h2 class="col-9 col-lg-7 col-md-7 col-sm-5 col-xs-2" style="margin-left: 50px;">Vos sessions d'observations</h2>
         <mat-select [(value)]="campagneSelected" (selectionChange)="changeCampagne($event.value)" class="campagneSelector">
-            <mat-option *ngFor="let year of years" value="{{year}}" class="option">Campagne {{year}}</mat-option>
+            <mat-option *ngFor="let campagne of campagnes" value="{{campagne.year}}" class="option">Campagne {{campagne.year}}</mat-option>
         </mat-select>
     </div>
 

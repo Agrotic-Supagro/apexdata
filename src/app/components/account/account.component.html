@@ -1,1 +1,11 @@
-<p>account works!</p>
+<div class="content">
+
+    <p> {{ user.prenom}}</p>
+    <p> {{ user.nom}}</p>
+    <p> {{ user.email}}</p>
+    <p> {{ user.structure}}</p>
+
+    <button mat-button class="logout-button" (click)="logout()">Se déconnecter</button>
+</div>
+
+

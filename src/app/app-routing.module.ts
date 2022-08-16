@@ -5,10 +5,12 @@ import { ExportComponent } from './components/export/export.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { MapComponent } from './components/map/map.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-detail.component';
 import { AuthGuardService } from './services/auth-guard.service';
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
     path: '',
     redirectTo: 'home/map',
     pathMatch: 'full',
@@ -31,19 +33,23 @@ const routes: Routes = [{
         component: ParcelleDetailComponent,
       },
       {
-          path: 'map',
-          component: MapComponent,
+        path: 'map',
+        component: MapComponent,
       },
       {
         path: 'export',
         component: ExportComponent
       },
       {
-          path: 'account',
-          component: AccountComponent
+        path: 'account',
+        component: AccountComponent
       }
     ],
     canActivate: [AuthGuardService]
+  },
+  { 
+    path: '**', 
+    component: PageNotFoundComponent 
   },
 ];
 

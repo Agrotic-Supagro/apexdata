@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { TranslateService } from '@ngx-translate/core';
 import Chart from 'chart.js/auto'
 import * as L from 'leaflet';
 import { LatLng } from 'leaflet';
@@ -10,6 +9,9 @@ import {MatStepper, StepperOrientation} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import 'leaflet.control.opacity';
+import 'leaflet-extra-markers';
+import { Campagne } from 'src/app/models/Campagne';
+import { Week } from 'src/app/models/Week';
 
 @Component({
   selector: 'app-map',
@@ -21,14 +23,15 @@ export class MapComponent implements OnInit {
   //stepperOrientation : Observable<StepperOrientation>;
 
   sessions : Session[] = [];
-  years : string[] = [];
-  weeks : any[] = [];
+  campagnes : Campagne[] = [];
+  weeks : Week[] = [];
   firstDaysOfWeeks : string[] = [];
   dataHasLoaded : boolean = false;
 
   map! : L.Map;
   pieChart! : Chart;
   pieChartAlreadyBuilt = false;
+  previousMarker : L.Marker | undefined;
 
   ifvClasseSelected : number = 0;
   icapexSelected : string = "";
@@ -52,9 +55,10 @@ export class MapComponent implements OnInit {
     subdomains:['mt0','mt1','mt2','mt3']
   });
 
+
   baseMaps = {
     "Vue Satellite": this.satellite,
-    "Vue Street": this.street
+    "Vue Street": this.street,
   };
 
   addedMaps = {
@@ -81,15 +85,8 @@ export class MapComponent implements OnInit {
 
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
 
-  //TRAD OBJECTS
-  graphFullGrowth  = { key : "graphFullGrowth", value : ""};
-  graphSlowedGrowth  = { key : "graphSlowedGrowth", value : ""};
-  graphGrowthArrest  = { key : "graphGrowthArrest", value : ""};
-  tabOfVars = [this.graphFullGrowth, this.graphSlowedGrowth, this.graphGrowthArrest];
-
   constructor(
     private sessionService : SessionService,
-    private _translate: TranslateService,
     private breakpointObserver: BreakpointObserver,
     private elementRef: ElementRef,
     ) {
@@ -100,12 +97,11 @@ export class MapComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    //this._translateLanguage();
     this.sessionService.retrieveCampagnesData().then( (res) => {
-      this.years = res as string[];
-      this.campagneSelected = this.years[0]; //Most recent year
+      this.campagnes = res as Campagne[];
+      this.campagneSelected = this.campagnes[0].year; //Most recent year
       this.sessionService.retrieveWeeksData(this.campagneSelected).then( (res) => {
-        this.weeks = res as any[];
+        this.weeks = res as Week[];
         this.weekSelected = this.weeks[0].weekNumber; //Most older week
         this.totalSteps = this.weeks.length;
         this.totalPages = Math.ceil(this.totalSteps / this.MAX_STEP);
@@ -132,22 +128,16 @@ export class MapComponent implements OnInit {
     this.myStepper._getIndicatorType = () => 'number';
   }
 
-  // _translateLanguage(): void {
-  //   this._translate.use("fr");
-  //   for(const elem of this.tabOfVars){
-  //     this._translate.get(elem.key).subscribe( res => {
-  //       elem.value = res;
-  //     })
-  //   }
-  // }
-
   setUpMap(){
     let tabCenter = this.computeCenter();
     let center = new LatLng(tabCenter[0], tabCenter[1]);
     this.map = L.map('map').setView(center, 1);
     this.satellite.addTo(this.map);
-    L.control.layers(undefined, this.baseMaps).addTo(this.map);
+    L.control.layers(undefined, this.baseMaps, {
+      collapsed : false,
+    }).addTo(this.map);
     L.control.opacity(this.baseMaps, {
+       collapsed: false,
         label: 'Transparence',})
     .addTo(this.map);
     let tabOfLimitPoints = this.computeLimitPoint();
@@ -167,6 +157,13 @@ export class MapComponent implements OnInit {
         this.map.invalidateSize();
       }, 400);
     });
+    //Icon to show on click
+    var clickedIcon = L.ExtraMarkers.icon({
+      icon: 'fa-map-pin',
+      markerColor: 'red',
+      shape: 'circle',
+      prefix: 'fa'
+    });
     for(const session of this.sessions){
       let marker = L.marker([session.moyLat, session.moyLong], {
         riseOnHover : true,
@@ -183,6 +180,11 @@ export class MapComponent implements OnInit {
         marker.closePopup()
       });
       marker.on('click',(ev)=>{
+        if(this.previousMarker != undefined){
+          this.previousMarker.setIcon(marker.getIcon());
+        }
+        this.previousMarker = marker;
+        marker = marker.setIcon(clickedIcon);
         this.ifvClasseSelected = session.ifvClasse;
         this.icapexSelected = session.ic_apex;
         this.dateSessionSelected = session.date_session;
