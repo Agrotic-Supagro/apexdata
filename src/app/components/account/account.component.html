@@ -1,11 +1,128 @@
+
 <div class="content">
+    <h2>Informations personnelles</h2>
 
-    <p> {{ user.prenom}}</p>
-    <p> {{ user.nom}}</p>
-    <p> {{ user.email}}</p>
-    <p> {{ user.structure}}</p>
+    <div class="showInformations" [formGroup]="modificationForm"> 
+        <div *ngIf="!modifyingPrenom" class="infoLine">
+            <div>
+                <h5>Prénom</h5>
+                <p class="userInfo"> {{ user.prenom }}</p>
+            </div>
+            <button mat-button class="modif-button" (click)="changeInfos('prenom')">Modifier</button>
+        </div>
+        <div *ngIf="modifyingPrenom" class="infoLine">
+            <div>
+                <h5>Prénom</h5>
+                <mat-form-field appearance="outline" class="formField">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom" cdkFocusInitial>
+                    <mat-error *ngIf="modificationForm.get('prenom')!.hasError('maxlength')">Le prénom ne peut pas comporter plus de 40 caractères</mat-error>
+                </mat-form-field>
+                <button *ngIf="!savingInfo" mat-button class="save-button" (click)="saveInfo()" [disabled]="!modificationForm.valid">Enregistrer</button>
+                <mat-spinner *ngIf="savingInfo" [diameter]="30" class="sendSpinner"></mat-spinner>
+            </div>
+            <button mat-button class="modif-button" (click)="cancel('prenom')">Annuler</button>
+        </div>
+        <hr>
 
-    <button mat-button class="logout-button" (click)="logout()">Se déconnecter</button>
+        <div *ngIf="!modifyingNom" class="infoLine">
+            <div>
+                <h5>Nom</h5>
+                <p class="userInfo"> {{ user.nom }}</p>
+            </div>
+            <button mat-button class="modif-button" (click)="changeInfos('nom')">Modifier</button>
+        </div>
+        <div *ngIf="modifyingNom" class="infoLine">
+            <div>
+                <h5>Nom</h5>
+                <mat-form-field appearance="outline" class="formField">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom">
+                    <mat-error *ngIf="modificationForm.get('nom')!.hasError('maxlength')">Le nom ne peut pas comporter plus de 40 caractères</mat-error>
+                </mat-form-field>
+                <button *ngIf="!savingInfo" mat-button class="save-button" (click)="saveInfo()" [disabled]="!modificationForm.valid">Enregistrer</button>
+                <mat-spinner *ngIf="savingInfo" [diameter]="30" class="sendSpinner"></mat-spinner>
+            </div>
+            <button mat-button class="modif-button" (click)="cancel('nom')">Annuler</button>
+        </div>
+        <hr>
+
+        <div *ngIf="!modifyingEmail" class="infoLine">
+            <div>
+                <h5>E-mail</h5>
+                <p class="userInfo"> {{ user.email }}</p>
+            </div>
+            <button mat-button class="modif-button" (click)="changeInfos('email')">Modifier</button>
+        </div>
+        <div *ngIf="modifyingEmail" class="infoLine">
+            <div>
+                <h5>E-mail</h5>
+                <mat-form-field appearance="outline" class="formField">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-error *ngIf="modificationForm.get('email')!.hasError('email')">Veuillez saisir une adresse électronique valide</mat-error>
+                </mat-form-field>
+                <button *ngIf="!savingInfo" mat-button class="save-button" (click)="saveInfo()" [disabled]="!modificationForm.valid">Enregistrer</button>
+                <mat-spinner *ngIf="savingInfo" [diameter]="30" class="sendSpinner"></mat-spinner>
+            </div>
+            <button mat-button class="modif-button" (click)="cancel('email')">Annuler</button>
+        </div>
+        <hr>
+        
+
+        <div *ngIf="!modifyingMdp" class="infoLine">
+            <div>
+                <h5>Mot de passe</h5>
+                <p class="userInfo"> *************** </p>
+            </div>
+            <button mat-button class="modif-button" (click)="changeInfos('mdp')">Modifier</button>
+        </div>
+        <div *ngIf="modifyingMdp" class="infoLine">
+            <div>
+                <h5>Mot de passe</h5>
+                <mat-form-field appearance="outline" class="formField">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="mot_de_passe">
+                    <mat-error *ngIf="modificationForm.get('mot_de_passe')!.hasError('maxlength')">Le mot de passe ne peut pas comporter plus de 40 caractères</mat-error>
+                </mat-form-field>
+                <button *ngIf="!savingInfo" mat-button class="save-button" (click)="saveInfo()" [disabled]="!modificationForm.valid">Enregistrer</button>
+                <mat-spinner *ngIf="savingInfo" [diameter]="30" class="sendSpinner"></mat-spinner>
+            </div>
+            <button mat-button class="modif-button" (click)="cancel('mdp')">Annuler</button>
+        </div>
+        <hr>
+
+        <div *ngIf="!modifyingStructure" class="infoLine">
+            <div>
+                <h5>Structure</h5>
+                <p class="userInfo"> {{ user.structure }}</p>
+            </div>
+            <button mat-button class="modif-button" (click)="changeInfos('structure')">Modifier</button>
+        </div>
+        <div *ngIf="modifyingStructure" class="infoLine">
+            <div>
+                <h5>Structure</h5>
+                <mat-form-field appearance="outline" class="formField">
+                    <mat-label>Structure</mat-label>
+                    <input matInput formControlName="structure">
+                    <mat-error *ngIf="modificationForm.get('structure')!.hasError('maxlength')">La structure ne peut pas comporter plus de 40 caractères</mat-error>
+                </mat-form-field>
+                <button *ngIf="!savingInfo" mat-button class="save-button" (click)="saveInfo()" [disabled]="!modificationForm.valid">Enregistrer</button>
+                <mat-spinner *ngIf="savingInfo" [diameter]="30" class="sendSpinner"></mat-spinner>
+            </div>
+            <button mat-button class="modif-button" (click)="cancel('structure')">Annuler</button>
+        </div>
+        <hr>
+    </div>
+
+    <div class="buttons">
+        <button *ngIf="!sendingData" mat-button class="send-button" (click)="sendData()"><mat-icon class="sendIcon">send</mat-icon></button>
+        <mat-spinner *ngIf="sendingData" [diameter]="30" class="sendSpinner"></mat-spinner>
+        <p class="btnInfo">Envoyer les données d'ApeX Vigne par e-mail (format CSV)</p>
+    </div>
+
+    <!-- <p style="text-align: center; color: black; margin-top: 100%;"><mat-icon>copyright</mat-icon> Modeste Professeur Valentin Flageul. Institut SupAgro.</p> -->
+   
 </div>
 
 

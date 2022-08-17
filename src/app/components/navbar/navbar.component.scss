@@ -23,6 +23,26 @@
     margin-right: 10px;
 }
 
+.inputIcon{
+    transform: rotate(180deg);
+}
+
+.logoutLink{
+    margin-left: auto;
+}
+
+.logoutLink :hover{
+    color: black;
+}
+
+.logoutLink:hover{
+    cursor: pointer;
+}
+
+.navbar-nav{
+    width: 100%;
+}
+
 .logo{
     width: 50px;
     margin-right: 10px;

@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, resolveForwardRef } from '@angular/core';
 import { User } from '../models/User';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,11 @@ export class UserService {
 
   private static user : User;
 
-  constructor() {}
+  AUTH_SERVER_ADDRESS = 'https:/apexvigne.agrotic.org/data/api';
+
+  constructor( 
+    private  httpClient: HttpClient,
+    ) {}
 
   getUser(){
     if(UserService.user == undefined || UserService.user == null){
@@ -34,6 +40,28 @@ export class UserService {
 
   setUser(user : User){
     UserService.user = user;
+  }
+
+  syncUser(data : any) {
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/sync_data.php`, data)
+      .subscribe( (res) => {
+        resolve(res);
+      },
+      error => {
+        reject(error);
+      })
+    });
+  }
+
+  // envoyer les données à l'utilisateur
+  sendData(data : any) {
+    return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/send_data.php`, data)
+    .pipe(
+      tap(async (res: any) => {
+        return res;
+      })
+    );
   }
 
   JSONtoUser(data : any){

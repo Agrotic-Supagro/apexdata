@@ -60,3 +60,5 @@ $light-radio-theme: mat.define-light-theme((
 
 @include mat.select-theme($light-select-theme);
 @include mat.stepper-theme($light-stepper-theme);
+@include mat.form-field-theme($light-stepper-theme);
+@include mat.dialog-theme($light-stepper-theme);

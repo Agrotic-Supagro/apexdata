@@ -258,6 +258,7 @@ export class MapComponent implements OnInit {
       if(this.sessions[0].date_session.split('/')[2] == this.campagneSelected){
           this.map.off();
           this.map.remove();
+          this.rerender();
           this.dataHasLoaded = true;
           this.setUpMap();   
       }
@@ -305,7 +306,7 @@ export class MapComponent implements OnInit {
       }
     })
     .catch(error => {
-      console.log("ERROR WHILE RETRIEVING SESSIONS DATAaaa : "+error);
+      console.log("ERROR WHILE RETRIEVING SESSIONS DATA : "+error);
       this.weekSelected = previousWeekSelected;
     })
   }
