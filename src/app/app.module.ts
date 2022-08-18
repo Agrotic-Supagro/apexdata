@@ -31,7 +31,9 @@ import { ParcelleDetailComponent } from './components/parcelle-detail/parcelle-d
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 // export function HttpLoaderFactory(http: HttpClient) {
@@ -60,6 +62,7 @@ const appRoutes: Routes = [
   imports: [
     MatButtonModule,
     MatStepperModule,
+    MatCheckboxModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatRadioModule,
@@ -73,6 +76,7 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    MatExpansionModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatSelectModule,

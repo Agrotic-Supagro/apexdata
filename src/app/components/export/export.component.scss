@@ -1,0 +1,120 @@
+.content{
+    height: 100%;
+    padding-top: 40px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.header{
+    display: flex;
+}
+
+.headerDesc{
+    margin-top: 40px;
+    color: teal;
+}
+
+.parcellesCheckboxes{
+    margin-top : 20px;
+    display: block;
+    font-size: 15px;
+}
+
+.exportButtons{
+    margin-top: 40px;
+}
+
+.mat-icon {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.csvIcon{
+    color: teal;
+}
+
+.pdfIcon{
+    color: red;
+}
+
+.csv-button{
+    min-width: 150px;
+    font-size: 14px;
+    height: 45px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid teal;
+    color: teal;
+    text-transform: uppercase;
+}
+
+.csv-button:hover{
+    min-width: 150px;
+    font-size: 14px;
+    height: 45px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background: teal;
+    color: white;
+    text-transform: uppercase;
+    transition: background-color 200ms linear;
+}
+
+.pdf-button{
+    min-width: 150px;
+    font-size: 14px;
+    height: 45px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid #B22222;
+    color: #B22222;
+    text-transform: uppercase;
+}
+
+.pdf-button:hover{
+    min-width: 150px;
+    font-size: 14px;
+    height: 45px;
+    border-radius: 10px;
+    background: #B22222;
+    color: white;
+    text-transform: uppercase;
+    transition: background-color 200ms linear;
+}
+
+.campagneSelector{
+    width: 200px;
+    max-height: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: auto; 
+    align-items: center;
+    display: flex;
+    border-radius: 15px;
+    border: 1px solid black;
+    font-family: 'Sora', sans-serif;
+}
+
+::ng-deep .mat-select-value{    
+    color: black !important;
+}
+
+.option{
+    color: black;
+    font-family: 'Sora', sans-serif;
+}
+
+.accordions {
+    margin-top: 40px;
+}
+
+.accordion {
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.panelHeader{
+    font-family: 'Sora', sans-serif;
+}

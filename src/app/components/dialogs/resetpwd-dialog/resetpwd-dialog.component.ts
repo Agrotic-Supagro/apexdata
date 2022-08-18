@@ -26,9 +26,9 @@ export class ResetpwdDialogComponent implements OnInit {
     const dataPwd = {mot_de_passe: pwd, email: this.email.value};
     this.auth.resetPassword(dataPwd).subscribe(async res => {
       if (res.status) {
-        this.openSnackBar(this.data.emailSent);
+        this.openSnackBar(this.data.emailSent, "Fermer");
       } else {
-        this.openSnackBar(this.data.emailDoesntExist);
+        this.openSnackBar(this.data.emailDoesntExist, "Fermer");
       }
     });
   }

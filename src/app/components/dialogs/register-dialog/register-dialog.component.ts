@@ -32,9 +32,9 @@ export class RegisterDialogComponent implements OnInit {
     this.auth.register(this.registrationForm.value).subscribe(async res => {
       if (res.status) {
         this.router.navigateByUrl('/login');
-        this.openSnackBar('Inscription réussie ! Vous pouvez vous connecter.');
+        this.openSnackBar('Inscription réussie ! Vous pouvez vous connecter.', "Fermer");
       } else {
-        this.openSnackBar('Cet e-mail est déjà inscrit. Si vous ne vous souvenez pas de votre mot de passe utilisez la procédure mot de passe oublié, merci.');
+        this.openSnackBar('Cet e-mail est déjà inscrit. Si vous ne vous souvenez pas de votre mot de passe utilisez la procédure mot de passe oublié, merci.', "Fermer");
         this.registrationForm.controls.email.setValue('');
       }
     });
