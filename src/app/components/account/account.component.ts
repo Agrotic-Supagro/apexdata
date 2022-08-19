@@ -48,8 +48,14 @@ export class AccountComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.user = this.userService.getUser();
-    this.setFormsValues();
+    let credentials = {
+      email: this.userService.getUser().email,
+      mot_de_passe: this.userService.getUser().mot_de_passe,
+    };
+    this.userService.getServerUser(credentials).subscribe((res) => {
+      this.user = this.userService.getUser();
+      this.setFormsValues();
+    })
   }
 
   saveInfo(info : string){

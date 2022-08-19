@@ -9,35 +9,46 @@
 
     <div class="headerDesc">
         <p>Vous pouvez exporter sous format <b>PDF</b> la <b>page parcelle</b> d'une ou plusieurs parcelles.</p>
-        <p>Vous pouvez exporter sous format <b>CSV</b> les <b>sessions d'observations</b> d'une ou plusieurs parcelles</p>
+        <p>Vous pouvez exporter sous format <b>CSV</b> les <b>sessions d'observations</b> d'une ou plusieurs parcelles.</p>
     </div>
+
+    <div *ngIf="!dataHasLoaded" class="waitingContent">
+      <mat-spinner [diameter]="30" class="loadingSpinner"></mat-spinner>
+      Veuillez patienter...
+    </div>
+    
 
     <div class="accordions">
         <mat-accordion class="accordion">
             <mat-expansion-panel >
               <mat-expansion-panel-header  class="panelHeader">
                 <mat-panel-title>
-                    Mes Observations
+                    Mes parcelles
                 </mat-panel-title>
                 <mat-panel-description>
-                    Retrouvez les parcelles qui vous appartiennent
+                    Retrouvez les parcelles que vous avez observé
                 </mat-panel-description>
               </mat-expansion-panel-header>
               
-                <!-- <mat-checkbox class="parcellesCheckboxes" (change)="setAll($event.checked)">Tout sélectionner</mat-checkbox> -->
-                <mat-checkbox *ngFor="let parcelle of parcellesOwned" class="parcellesCheckboxes">{{parcelle.nom_parcelle}}</mat-checkbox>
+                <mat-checkbox class="allSelectCheckboxes" (change)="setAllObserved($event.checked)" [checked]="checkAllObservedSelected()" 
+                >Tout sélectionner
+              </mat-checkbox>
+
+                <mat-checkbox *ngFor="let parcelle of parcellesObserved" class="parcellesCheckboxes" (change)="checkParcelle($event, parcelle)" 
+                 [checked]="checkAllObservedSelected()">{{parcelle.nom_parcelle}}
+              </mat-checkbox>
             </mat-expansion-panel>
     
             <mat-expansion-panel>
               <mat-expansion-panel-header class="panelHeader">
                 <mat-panel-title>
-                    Parcelles partagées
+                    Parcelles partagées ??
                 </mat-panel-title>
                 <mat-panel-description>
-                    Retrouvez les parcelles qui vont ont été partagées
+                    A CLARIFIER
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <mat-checkbox *ngFor="let parcelle of parcellesShared" class="parcellesCheckboxes">{{parcelle.nom_parcelle}} 
+              <mat-checkbox *ngFor="let parcelle of parcellesShared" class="parcellesCheckboxes" [labelPosition]="'before'">{{parcelle.nom_parcelle}} 
                 ( propriétaire : {{parcelle.nom_proprietaire}} {{parcelle.prenom_proprietaire}} )
               </mat-checkbox>
             </mat-expansion-panel>
@@ -45,8 +56,13 @@
     </div>
 
     <div class="exportButtons">
-        <button *ngIf="!exportingCSV" mat-button class="csv-button" (click)="exportCSV()" [disabled]="false"> <mat-icon class="fileIcon">table_chart</mat-icon> Export CSV</button>
-        <button *ngIf="!exportingPDF" mat-button class="pdf-button" (click)="exportPDF()" [disabled]="false"><mat-icon class="fileIcon">picture_as_pdf</mat-icon> Export PDF</button>
+        <button *ngIf="!exportingCSV" mat-button class="csv-button" (click)="exportCSV()" 
+        [disabled]="nothingSelected()"> <mat-icon class="fileIcon">table_chart</mat-icon> Export CSV
+      </button>
+
+        <button *ngIf="!exportingPDF" mat-button class="pdf-button" (click)="exportPDF()" 
+        [disabled]="nothingSelected()"><mat-icon class="fileIcon">picture_as_pdf</mat-icon> Export PDF
+      </button>
     </div>
 
 </div>

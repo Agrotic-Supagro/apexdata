@@ -14,10 +14,17 @@
     color: teal;
 }
 
+.allSelectCheckboxes{
+    margin-top : 20px;
+    display: block;
+    font-size: 15px;
+}
+
 .parcellesCheckboxes{
     margin-top : 20px;
     display: block;
     font-size: 15px;
+    margin-left: 20px;
 }
 
 .exportButtons{
@@ -61,6 +68,19 @@
     transition: background-color 200ms linear;
 }
 
+.csv-button:disabled{
+    min-width: 150px;
+    font-size: 14px;
+    height: 45px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background: white;
+    color: grey;
+    border: 1px solid grey;
+    text-transform: uppercase;
+    transition: background-color 200ms linear;
+}
+
 .pdf-button{
     min-width: 150px;
     font-size: 14px;
@@ -79,6 +99,18 @@
     border-radius: 10px;
     background: #B22222;
     color: white;
+    text-transform: uppercase;
+    transition: background-color 200ms linear;
+}
+
+.pdf-button:disabled{
+    min-width: 150px;
+    font-size: 14px;
+    height: 45px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid grey;
+    color: grey;
     text-transform: uppercase;
     transition: background-color 200ms linear;
 }
@@ -107,6 +139,20 @@
 
 .accordions {
     margin-top: 40px;
+}
+
+.loadingSpinner{
+    align-self: center;
+    margin-right: 10px;
+}
+
+.waitingContent::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
+    stroke: teal;
+}
+
+.waitingContent{
+    display: flex;
+    align-items: center;
 }
 
 .accordion {

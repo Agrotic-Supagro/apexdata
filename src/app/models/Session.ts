@@ -29,7 +29,7 @@ export class Session{
     ic_apex : string = "";
     
     public constructor(id_session : string, id_parcelle : string, date_session: string, date_maj: string, nom_parcelle : string, moyLat : string, moyLong : string,
-        apex0 : string, apex1 : string, apex2 : string, weekNumber : number){
+        apex0 : string, apex1 : string, apex2 : string, weekNumber? : number){
         this.id_session = id_session;
         this.id_parcelle = id_parcelle;
         this.date_session = this.transform(date_session, 'dates');
@@ -41,7 +41,7 @@ export class Session{
         this.apex0 = parseInt(apex0);
         this.apex1 = parseInt(apex1);
         this.apex2 = parseInt(apex2);
-        this.weekNumber = weekNumber;
+        this.weekNumber = weekNumber ? weekNumber : 55; //Impossible week
         this.computeSessionData();
     }
 

@@ -51,6 +51,29 @@ export class SessionService {
     })
   }
 
+  retrieveSessionsExportData(year : string, id_parcelle : string) {
+    let sessions : Session[] = [];
+    let jsonData = {
+      param: 'sessionExportData',
+      campagne : year,
+      idParcelle : id_parcelle,
+      idUser: this.userService.getUser().id_utilisateur
+    };
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
+      .subscribe(async (res : any) => {
+        for(const elem of res.data){
+          let session = this.JSONtoSession(elem);
+          sessions.push(session);
+        }
+        resolve(sessions);
+      },
+      error => {
+        reject(error)
+      })
+    })
+  }
+
   retrieveOldSessionData(jsonData : any, session : Session){
     return new Promise((resolve, reject) => {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_oldsession_data.php`, jsonData)
@@ -125,7 +148,7 @@ export class SessionService {
     return arr2[0];
   }
 
-  JSONtoSession(data : any, weekNumber : number){
+  JSONtoSession(data : any, weekNumber? : number){
     return new Session(
       data.id_session,
       data.id_parcelle,

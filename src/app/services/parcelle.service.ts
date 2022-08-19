@@ -16,7 +16,7 @@ export class ParcelleService {
     ) {}
   
 
-  retrieveParcellesOwnedData(year : string) {
+  retrieveObservedParcellesData(year : string) {
     let parcelles : Parcelle[] = [];
     let jsonData = {
       param: 'parcelleData',
@@ -38,6 +38,7 @@ export class ParcelleService {
     })
   }
 
+  //A CONFIRMER
   retrieveParcellesSharedData(year : string) {
     let parcelles : Parcelle[] = [];
     let jsonData = {
