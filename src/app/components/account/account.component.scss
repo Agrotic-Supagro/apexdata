@@ -26,6 +26,7 @@ p {
 .formField{
   margin-top: 20px;
   width: max-content;
+  font-family: 'Sora', sans-serif;
 }
 
 .save-button{
@@ -36,6 +37,7 @@ p {
     background: #008080;
     color: white;
     text-transform: uppercase;
+    font-family: 'Sora', sans-serif;
 }
 
 .showInformations{
@@ -73,16 +75,17 @@ p {
     border-radius: 25px;
     text-decoration: underline;
     justify-self: end;
+    font-family: 'Sora', sans-serif;
 }
 
-.buttons ::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
-  stroke: teal;
-}
-
-.showInformations ::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
+.content ::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
   stroke: teal;
 }
 
 .sendSpinner{
   align-self: center;
+}
+
+.dataSpinner{
+  margin-top: 40px;
 }

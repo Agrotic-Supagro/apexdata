@@ -29,7 +29,7 @@ const routes: Routes = [
     component : HomeComponent,
     children: [
       {
-        path: 'parcelle-detail/:idparcelle',
+        path: 'parcelle-detail/:idparcelle/:campagne',
         component: ParcelleDetailComponent,
       },
       {

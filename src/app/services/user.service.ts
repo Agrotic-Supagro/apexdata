@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, resolveForwardRef } from '@angular/core';
 import { User } from '../models/User';
 import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 const TOKEN_KEY = 'TOKEN_KEY';
 
@@ -29,9 +29,9 @@ export class UserService {
     }
   }
 
-  getServerUser(credentials: {email: string, mot_de_passe: string}): Observable< any > {
-    return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/login.php`, credentials).pipe(
-      tap(async (res: any) => {
+  getServerUser(credentials: {email: string, mot_de_passe: string}) {
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/login.php`, credentials).subscribe((res: any) => {
         if (res.status) {
           try{
             window.localStorage.setItem(TOKEN_KEY, res.jwt);
@@ -50,13 +50,19 @@ export class UserService {
               email: credentials.email.toLowerCase(),
               mot_de_passe: credentials.mot_de_passe
             };
+            resolve(res);
           }
           catch(error){
+            resolve(error);
             console.log(error);
           }
-        }
+      }
+      else{
+        //LOGIN FAILED
+        reject(new Error("login failed"));
+      }
       })
-    );
+    })
   }
 
   initUser(){

@@ -15,12 +15,14 @@
 }
 
 .allSelectCheckboxes{
+    font-family: 'Sora', sans-serif;
     margin-top : 20px;
     display: block;
     font-size: 15px;
 }
 
 .parcellesCheckboxes{
+    font-family: 'Sora', sans-serif;
     margin-top : 20px;
     display: block;
     font-size: 15px;
@@ -29,6 +31,8 @@
 
 .exportButtons{
     margin-top: 40px;
+    display: flex;
+    
 }
 
 .mat-icon {
@@ -45,6 +49,7 @@
 }
 
 .csv-button{
+    font-family: 'Sora', sans-serif;
     min-width: 150px;
     font-size: 14px;
     height: 45px;
@@ -82,6 +87,7 @@
 }
 
 .pdf-button{
+    font-family: 'Sora', sans-serif;
     min-width: 150px;
     font-size: 14px;
     height: 45px;
@@ -147,6 +153,10 @@
 }
 
 .waitingContent::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
+    stroke: teal;
+}
+
+.content::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
     stroke: teal;
 }
 

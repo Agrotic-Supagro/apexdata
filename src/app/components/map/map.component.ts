@@ -151,9 +151,7 @@ export class MapComponent implements OnInit {
     //BECAUSE SIZE OF MAP IS REDUCES IN SCSS : -1 ZOOM
     this.map.setZoom(this.map.getZoom()-1);
     this.map.on('container-resize', (ev) => {
-      console.log("container resize")
       setTimeout( () => { 
-        console.log("timeout done");
         this.map.invalidateSize();
       }, 400);
     });

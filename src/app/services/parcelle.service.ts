@@ -14,7 +14,6 @@ export class ParcelleService {
     private  httpClient: HttpClient,
     private userService : UserService,
     ) {}
-  
 
   retrieveObservedParcellesData(year : string) {
     let parcelles : Parcelle[] = [];

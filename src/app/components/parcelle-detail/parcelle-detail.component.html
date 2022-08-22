@@ -1,1 +1,28 @@
-<p>parcelle-detail works!</p>
+<div class="content">
+
+    <div *ngIf="detailsLoaded" class="header">
+        <h2>{{sessions[0].nom_parcelle}}</h2>     
+        <mat-select [(value)]="campagneSelected" (selectionChange)="changeCampagne($event.value)" class="campagneSelector">
+            <mat-option *ngFor="let campagne of campagnes" value="{{campagne.year}}" class="option">Campagne {{campagne.year}}</mat-option>
+        </mat-select>
+    </div>
+
+    <div class="suiviCroissance">
+        <h4>Suivi de la croissance</h4>
+        <div class="chart">
+            <canvas id="croissance"></canvas>
+        </div>
+       
+    </div>
+
+    <div class="contrainteHydr">
+        <h4>Interprétation de la contrainte hydrique</h4>
+        <div class="chart">
+            <canvas id="contrainte"></canvas>
+        </div>
+
+    </div>
+    
+
+
+</div>

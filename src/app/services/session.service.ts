@@ -51,6 +51,29 @@ export class SessionService {
     })
   }
 
+  retrieveDetailsParcelleData(idParcelle : string, year : string){
+    let sessions : Session[] = [];
+    let jsonData = {
+      param: 'parcelleDetails',
+      campagne : year,
+      idParcelle : idParcelle,
+      idUser: this.userService.getUser().id_utilisateur
+    };
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_sessions_data.php`, jsonData)
+      .subscribe(async (res : any) => {
+        for(const elem of res.data){
+          let session = this.JSONtoSession(elem);
+          sessions.push(session);
+        }
+        resolve(sessions);
+      },
+      error => {
+        reject(error)
+      })
+    })
+  }
+
   retrieveSessionsExportData(year : string, id_parcelle : string) {
     let sessions : Session[] = [];
     let jsonData = {
@@ -95,6 +118,27 @@ export class SessionService {
     let jsonData = {
       param: 'campagneData',
       idUser: this.userService.getUser().id_utilisateur
+    };
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_campagnes_data.php`, jsonData)
+      .subscribe((res : any) => {
+        for(const obj of res.data){
+          campagnes.push(new Campagne(obj.year));
+        }
+        resolve(campagnes);
+      },
+      error => {
+        reject(error)
+      })
+    })
+  }
+
+  retrieveParcelleCampagnesData(id_parcelle : string){
+    let campagnes : Campagne[] = [];
+    let jsonData = {
+      param: 'parcelleCampagneData',
+      idUser: this.userService.getUser().id_utilisateur,
+      idParcelle: id_parcelle
     };
     return new Promise((resolve, reject) => {
       this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/retrieve_campagnes_data.php`, jsonData)

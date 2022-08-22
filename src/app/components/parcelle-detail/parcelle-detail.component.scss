@@ -1,0 +1,46 @@
+.content{
+    height: 100%;
+    padding-top: 40px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.header{
+    display: flex;
+}
+
+.suiviCroissance{
+    margin-top: 20px;
+}
+
+.contrainteHydr{
+    margin-top: 20px;
+}
+
+.chart{
+    margin-top: 20px;
+    width: 750px;
+    height: 300px;
+}
+
+.campagneSelector{
+    width: 200px;
+    max-height: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: auto; 
+    align-items: center;
+    display: flex;
+    border-radius: 15px;
+    border: 1px solid black;
+    font-family: 'Sora', sans-serif;
+}
+
+::ng-deep .mat-select-value{    
+    color: black !important;
+}
+
+.option{
+    color: black;
+    font-family: 'Sora', sans-serif;
+}

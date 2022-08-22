@@ -35,7 +35,7 @@
               </mat-checkbox>
 
                 <mat-checkbox *ngFor="let parcelle of parcellesObserved" class="parcellesCheckboxes" (change)="checkParcelle($event, parcelle)" 
-                 [checked]="checkAllObservedSelected()">{{parcelle.nom_parcelle}}
+                 [checked]="checkSelected(parcelle)">{{parcelle.nom_parcelle}}
               </mat-checkbox>
             </mat-expansion-panel>
     
@@ -59,10 +59,12 @@
         <button *ngIf="!exportingCSV" mat-button class="csv-button" (click)="exportCSV()" 
         [disabled]="nothingSelected()"> <mat-icon class="fileIcon">table_chart</mat-icon> Export CSV
       </button>
+      <mat-spinner *ngIf="exportingCSV" [diameter]="30" class="loadingSpinner"></mat-spinner>
 
         <button *ngIf="!exportingPDF" mat-button class="pdf-button" (click)="exportPDF()" 
         [disabled]="nothingSelected()"><mat-icon class="fileIcon">picture_as_pdf</mat-icon> Export PDF
       </button>
+      <mat-spinner *ngIf="exportingPDF" [diameter]="30" class="loadingSpinner"></mat-spinner>
     </div>
 
 </div>

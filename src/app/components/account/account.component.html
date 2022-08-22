@@ -2,7 +2,9 @@
 <div class="content">
     <h2>Informations personnelles</h2>
 
-    <div class="showInformations"> 
+    <mat-spinner *ngIf="!userLoaded" [diameter]="30" class="dataSpinner"></mat-spinner>
+
+    <div *ngIf="userLoaded" class="showInformations"> 
         <div *ngIf="!modifyingPrenom" class="infoLine">
             <div>
                 <h5>Prénom</h5>
@@ -115,7 +117,7 @@
         <hr>
     </div>
 
-    <div class="buttons">
+    <div *ngIf="userLoaded" class="buttons">
         <button *ngIf="!sendingData" mat-button class="send-button" (click)="sendData()"><mat-icon class="sendIcon">send</mat-icon></button>
         <mat-spinner *ngIf="sendingData" [diameter]="30" class="sendSpinner"></mat-spinner>
         <p class="btnInfo">Envoyer toutes mes données par e-mail (format CSV)</p>

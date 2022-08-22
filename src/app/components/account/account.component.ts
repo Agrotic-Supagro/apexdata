@@ -16,6 +16,7 @@ import { InfoDialogComponent } from '../dialogs/info-dialog/info-dialog.componen
 export class AccountComponent implements OnInit {
 
   user! : User;
+  userLoaded : boolean = false;
 
   modifyingPrenom : boolean = false;
   modifyingNom : boolean = false;
@@ -44,7 +45,7 @@ export class AccountComponent implements OnInit {
     private userService : UserService,
     private dateformat : DateService,
     private dialog : MatDialog,
-    public _snackBar : MatSnackBar
+    public _snackBar : MatSnackBar,
     ) { }
 
   ngOnInit(): void {
@@ -52,9 +53,14 @@ export class AccountComponent implements OnInit {
       email: this.userService.getUser().email,
       mot_de_passe: this.userService.getUser().mot_de_passe,
     };
-    this.userService.getServerUser(credentials).subscribe((res) => {
+    this.userService.getServerUser(credentials).then((res) => {
       this.user = this.userService.getUser();
       this.setFormsValues();
+      this.userLoaded = true;
+    })
+    .catch(error => {
+      console.log(error)
+      this.auth.logout();
     })
   }
 

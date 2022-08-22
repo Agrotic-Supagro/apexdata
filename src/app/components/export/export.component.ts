@@ -97,6 +97,7 @@ export class ExportComponent implements OnInit {
   }
 
   async exportCSV(){
+    this.exportingCSV = true;
     let csv = 'Nom Parcelle, Date session, Pleine Croissance, Croissance Ralentie, Arrêt de croissance\n';
     let csvFileData: any[] = [];
     for (let [key, value] of this.parcellesObservedSelected) {
@@ -118,6 +119,7 @@ export class ExportComponent implements OnInit {
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);  
     hiddenElement.download = 'Données Sessions ApeX.csv';  
     hiddenElement.click(); 
+    this.exportingCSV = false;
   }
 
   exportPDF(){
@@ -129,18 +131,26 @@ export class ExportComponent implements OnInit {
   }
 
   checkParcelle(event : MatCheckboxChange, parcelle: Parcelle) {
-    if(this.checkAllObservedSelected()){
-      this.parcellesObservedSelected.clear();
-    }
     if(event.checked){
-      this.parcellesObservedSelected.set(parcelle.id_parcelle, event.checked);
+      this.parcellesObservedSelected.set(parcelle.id_parcelle, true);
     }
     else{
       if(this.parcellesObservedSelected.has(parcelle.id_parcelle)) {
         this.parcellesObservedSelected.delete(parcelle.id_parcelle);
       }
     }
-    this.checkAllObservedSelected();
+  }
+
+  checkSelected(parcelle : Parcelle){
+    if(this.parcellesObservedSelected.size == this.parcellesObserved.length){
+      return true;
+    }
+    else if(this.parcellesObservedSelected.get(parcelle?.id_parcelle) == true){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   checkAllObservedSelected(){
