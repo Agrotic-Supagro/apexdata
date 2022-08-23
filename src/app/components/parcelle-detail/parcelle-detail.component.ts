@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Chart } from 'chart.js';
 import { Campagne } from 'src/app/models/Campagne';
 import { Session } from 'src/app/models/Session';
 import { SessionService } from 'src/app/services/session.service';
+import {  Chart, ChartType} from 'chart.js';
 
 @Component({
   selector: 'app-parcelle-detail',
@@ -14,6 +14,9 @@ export class ParcelleDetailComponent implements OnInit {
 
   croissanceChart! : Chart;
   contrainteChart! : Chart;
+
+  croissanceChartBuilt = false;
+  contrainteChartBuilt = false;
 
   idParcelle : string = "";
   campagnes : Campagne[] = [];
@@ -50,11 +53,12 @@ export class ParcelleDetailComponent implements OnInit {
   changeCampagne(year : string){
     this.detailsLoaded = false;
     let previousCampagneSelected = this.campagneSelected;
-    let previousSessions = this.sessions;
     this.campagneSelected = year;
     this.sessionService.retrieveDetailsParcelleData(this.idParcelle, this.campagneSelected).then( (res) => {
       this.sessions = res as Session[];
       this.detailsLoaded = true;
+      this.makeChartCroissance();
+      this.makeChartContrainte();
     })
     .catch(error => {
       this.detailsLoaded = true;
@@ -64,6 +68,9 @@ export class ParcelleDetailComponent implements OnInit {
   }
 
   public makeChartCroissance() {
+    if(this.croissanceChartBuilt){
+      this.croissanceChart.destroy();
+    }
     let dates = [];
     let icApexs = [];
     let purcentApexs0 = [];
@@ -71,7 +78,7 @@ export class ParcelleDetailComponent implements OnInit {
     let purcentApexs2 = [];
     for(const session of this.sessions){
       dates.push(session.date_session);
-      icApexs.push(parseInt(session.ic_apex));
+      icApexs.push(parseFloat(session.ic_apex));
       purcentApexs0.push(session.tauxApex0);
       purcentApexs1.push(session.tauxApex1);
       purcentApexs2.push(session.tauxApex2);
@@ -181,24 +188,16 @@ export class ParcelleDetailComponent implements OnInit {
           xAxes : {
             suggestedMax: 5
           },
-          y: {
-            position: 'left',
-            display: true,
-            max: 1,
-            min: 0,
-          }, 
-          y1 : {
-            position: 'right',
-            display: true,
-            max: 100,
-            min: 0,
-          }
         }
       }
     });
+    this.croissanceChartBuilt = true;
   }
 
   public makeChartContrainte() {
+    if(this.contrainteChartBuilt){
+      this.contrainteChart.destroy();
+    }
     let dates = [];
     let contraintes = [];
     for(const session of this.sessions){
@@ -211,7 +210,6 @@ export class ParcelleDetailComponent implements OnInit {
         labels: dates,
         datasets: [{
             label: 'Niveau contrainte hydrique',
-            yAxisID: 'CH',
             fill: true,
             backgroundColor: 'rgba(151, 162, 191, 0.2)',
             borderColor: 'rgb(151, 162, 191)',
@@ -242,15 +240,13 @@ export class ParcelleDetailComponent implements OnInit {
         },
         scales: {
           xAxes: {
-            type : 'linear',
             suggestedMax: 5
           },
-          yAxes: {
-            position: 'left',
-            suggestedMax: 5,
+          y: {
             ticks: {
-              callback: function(label : any, index : any, labels : any) {   
-                switch (label) {
+              stepSize: 1,
+              callback: function(value : any, index : any, ticks : any) {   
+                switch (value) {
                   case 0:
                       return 'Absente';
                   case 1:
@@ -260,13 +256,14 @@ export class ParcelleDetailComponent implements OnInit {
                   case 3:
                       return 'Sévère';
                   default :
-                    return 'Sévère';
+                    return 'Inconnue';
                 }
               }
             }
           }
         }
       }
-    })
+    });
+    this.contrainteChartBuilt = true;
   }
 }

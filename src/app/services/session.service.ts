@@ -66,7 +66,8 @@ export class SessionService {
           let session = this.JSONtoSession(elem);
           sessions.push(session);
         }
-        resolve(sessions);
+        //reverse for dates -> ASC in charts
+        resolve(sessions.reverse());
       },
       error => {
         reject(error)

@@ -144,6 +144,7 @@
 }
 
 .accordions {
+    width: 800px;
     margin-top: 40px;
 }
 
@@ -168,8 +169,11 @@
 .accordion {
     justify-content: space-between;
     align-items: center;
-    
 }
+
+.mat-accordion .mat-expansion-panel{
+    margin-bottom: 10px;
+}  
 
 .panelHeader{
     font-family: 'Sora', sans-serif;

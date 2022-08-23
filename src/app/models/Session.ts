@@ -25,7 +25,7 @@ export class Session{
     tauxApex1: number= 0;
     tauxApex2: number = 0;
     apexValues: number[] = [];
-    ifvClasse : number = 0;
+    ifvClasse : number = 3;
     ic_apex : string = "";
     
     public constructor(id_session : string, id_parcelle : string, date_session: string, date_maj: string, nom_parcelle : string, moyLat : string, moyLong : string,
@@ -53,7 +53,7 @@ export class Session{
         this.tauxApex2 = (this.apex2 / (this.apex2 + this.apex0 + this.apex1))* 100;
         this.apexValues = [Math.round(this.tauxApex0), Math.round(this.tauxApex1), Math.round(this.tauxApex2)];
         // GESTION DES CLASSES DE CONTRAINTE HYDRIQUE ET ECIMAGE
-        // Classe IFV : 0 = absente, 1 = moderee, 2 = importante, 3 = forte, 4 = ecimee
+        // Classe IFV : 0 = absente, 1 = moderee, 2 = forte, 3 = sévère, 4 = ecimee
         if (this.apex0 === 999) {
             this.ifvClasse = 4;
         } 
